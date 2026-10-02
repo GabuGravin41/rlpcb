@@ -122,6 +122,7 @@ STACKUPS = {
 NETCLASS_DEFAULTS = {
     "Power": {"track_width": 0.5, "clearance": 0.2, "via_diameter": 0.8, "via_drill": 0.4},
     "HighCurrent": {"track_width": 1.5, "clearance": 0.25, "via_diameter": 1.0, "via_drill": 0.5},
+    "Power2A": {"track_width": 1.0, "clearance": 0.2, "via_diameter": 0.8, "via_drill": 0.4},
     "Ground": {"track_width": 0.5, "clearance": 0.2, "via_diameter": 0.8, "via_drill": 0.4},
     "HighSpeed": {"track_width": 0.2, "clearance": 0.2, "via_diameter": 0.6, "via_drill": 0.3},
     "Diff90": {"track_width": 0.2, "clearance": 0.2, "diff_pair_width": 0.2, "diff_pair_gap": 0.15, "via_diameter": 0.6, "via_drill": 0.3},
@@ -132,12 +133,39 @@ NETCLASS_DEFAULTS = {
 }
 
 
+def current_class(current_a: float) -> str:
+    """Net class for a net carrying current_a, sized with IPC-2221 for ≤ 10 °C rise on 1 oz outer copper."""
+    if current_a >= 2.4:
+        return "HighCurrent"
+    if current_a >= 1.4:
+        return "Power2A"
+    return "Power"
+
+
+def current_class_widths(plan: DesignPlan) -> Dict[str, Dict]:
+    """Track widths for the current classes, from the largest current in each (a class never gets narrower than
+    its default)."""
+    from .ampacity import width_for
+    worst: Dict[str, float] = {}
+    for n in plan.nets:
+        if n.current_a and classify_net(n.name, n.net_class) != "ground":
+            c = current_class(n.current_a)
+            worst[c] = max(worst.get(c, 0.0), n.current_a)
+    out = {}
+    for c, amps in worst.items():
+        w = math.ceil(width_for(amps, 10) * 10 - 1e-9) / 10
+        out[c] = {"track_width": max(NETCLASS_DEFAULTS[c]["track_width"], w)}
+    return out
+
+
 def netclasses_from_plan(plan: DesignPlan, stackup_note: str = "") -> Dict[str, List[str]]:
+    """Net class per net. Any net with a current (power rails, switch nodes, motor phases) is sized by that current,
+    whatever else it is; the rest by kind."""
     groups = defaultdict(list)
     for n in plan.nets:
         cls = classify_net(n.name, n.net_class)
-        if n.current_a and n.current_a >= 3:
-            groups["HighCurrent"].append(n.name)
+        if n.current_a and cls != "ground":
+            groups[current_class(n.current_a)].append(n.name)
         elif cls == "power":
             groups["Power"].append(n.name)
         elif cls == "ground":
@@ -169,14 +197,29 @@ def apply_netclasses(project_file: str, assignments: Dict[str, List[str]], overr
         params = dict(NETCLASS_DEFAULTS.get(name, {}))
         params.update((overrides or {}).get(name, {}))
         if name in by_name:
-            by_name[name].update(params)
+            # an existing class keeps the engineer's tuning; only explicit overrides (e.g. current-sized widths)
+            # change it, and a width is only ever raised
+            for k, v in (overrides or {}).get(name, {}).items():
+                if k == "track_width" and (by_name[name].get(k) or 0) >= v:
+                    continue
+                by_name[name][k] = v
         else:
             base = dict(default) if default else {}
+            sibling = by_name.get("Power") if name in ("Power2A", "HighCurrent") else None
+            if sibling:
+                # a new current tier follows the project's tuned power class (clearance, vias); only the width differs
+                base.update({k: v for k, v in sibling.items() if k not in ("name", "priority", "track_width")})
+                params = {k: v for k, v in params.items() if k == "track_width"}
+                params.update((overrides or {}).get(name, {}))
             base.update({"name": name, **params})
             base.setdefault("priority", len(classes))
             classes.append(base)
             created.append(name)
     pats = ns.setdefault("netclass_patterns", [])
+    # a net moving to another class loses its old pattern (KiCad uses the first pattern that matches)
+    moving = {pat for cls, nets in assignments.items() for n in nets for pat in ([n] if "/" in n else [n, "*/" + n])}
+    want = {pat: cls for cls, nets in assignments.items() for n in nets for pat in ([n] if "/" in n else [n, "*/" + n])}
+    pats[:] = [p for p in pats if not (p.get("pattern") in moving and p.get("netclass") != want[p.get("pattern")])]
     existing = {(p.get("netclass"), p.get("pattern")) for p in pats}
     added = 0
     for cls, nets in assignments.items():

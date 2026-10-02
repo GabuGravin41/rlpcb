@@ -42,7 +42,8 @@ model's mistakes are caught where checks exist and flagged where they do not. Se
 | `assurance_report` | What is verified and what is not, before you order boards. |
 | `kickoff`, `kickoff_apply` | From an idea to an architecture, questions, pitfalls and a project skeleton. |
 | `explain_component`, `explain_net` | What a part or net does in this circuit, and why it is there. |
-| `review_layout`, `compare_layouts` | Placement, routing and EMC review with reasons; side-by-side layout studies. |
+| `review_layout`, `compare_layouts` | Placement, routing, EMC and current-capacity review (IPC-2221 track widths against the plan's currents) with reasons; side-by-side layout studies. |
+| `widen_power_tracks` | Widens the tracks of current-carrying nets as far as KiCad's DRC allows. |
 | `interface_changes` | Notices between this board and the mechanical design (RL CAD). |
 
 ## What's inside

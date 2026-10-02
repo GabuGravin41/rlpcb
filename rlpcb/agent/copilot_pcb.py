@@ -24,7 +24,7 @@ _SCOPE = {
     "create_project": "project", "add_sheet": "schematic", "import_lcsc_part": "library",
     "corpus_import_symbol": "library", "plan_set_info": "plan:requirements", "plan_import_schematic": "plan",
     "place_parts": "schematic", "sync_fields_from_plan": "schematic",
-    "setup_netclasses": "board:rules", "add_design_rules": "board:rules", "move_footprints": "board:placement",
+    "setup_netclasses": "board:rules", "widen_power_tracks": "board:routing", "add_design_rules": "board:rules", "move_footprints": "board:placement",
     "autoroute": "board:routing", "add_tracks_live": "board:routing", "finish_routing": "board:routing",
     "system_create": "system", "system_add_board": "system", "system_add_harness": "system",
     "system_add_supply": "system", "design_checks": "decisions", "kickoff_apply": "project",

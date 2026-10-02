@@ -149,6 +149,184 @@ def _plane_layers(board: Board) -> Dict[str, str]:
     return out
 
 
+def _usb_high_speed(plan) -> bool:
+    """True when the plan says the USB link runs at high speed (480 Mb/s)."""
+    if not plan:
+        return False
+    txt = " ".join([str(getattr(plan, "requirements", "") or "")] +
+                   [f"{n.name} {n.notes or ''}" for n in plan.nets if "USB" in n.name.upper()]).upper()
+    return bool(re.search(r"USB ?(2\.0 )?HS\b|HIGH[- ]SPEED USB|USB HIGH[- ]SPEED|480 ?MB", txt))
+
+
+def _source_pads(pads) -> set:
+    """Pads where a rail's current comes from: an inductor (switcher output), a battery/power connector, or a
+    regulator's output pin. Indexes into pads."""
+    src = {k for k, (ref, p) in enumerate(pads) if re.match(r"^L\d", ref)}
+    if not src:
+        src = {k for k, (ref, p) in enumerate(pads) if re.match(r"^(J|P|BT)\d", ref) and
+               re.search(r"BAT|PWR|VIN|DC|POWER", (p.pinfunction or "") + " " + ref, re.I)}
+    if not src:
+        src = {k for k, (ref, p) in enumerate(pads) if re.search(r"^(V?OUT|SW)", p.pinfunction or "", re.I)}
+    return src
+
+
+def _sense_branches(board: Board, nets, branches: Optional[Dict] = None) -> set:
+    """Indexes of tracks that only lead to resistor pads (dividers, sense taps, pull-ups): they carry no load current,
+    so a thin track there is right. Found by cutting each track and looking at what is on the far side.
+    When `branches` is given, it receives {track index: [refs downstream]} for tracks that feed only part of the net
+    (the side away from the rail's source)."""
+    out = set()
+    pads_by_net = defaultdict(list)
+    for f in board.footprints:
+        for p in f.pads:
+            if _base(p.net) in nets:
+                pads_by_net[p.net].append((f.ref, p))
+    for net in {t.net for t in board.tracks if _base(t.net) in nets}:
+        tr = [(i, t) for i, t in enumerate(board.tracks) if t.net == net]
+        vias = [v for v in board.vias if v.net == net]
+        zones = [z for z in board.zones if z["net"] == net and z["bbox"]]
+        pads = pads_by_net.get(net, [])
+        # nodes: 0..len(tr)*2-1 track ends, then vias, pads, zones
+        nE = len(tr) * 2
+        nV, nP = len(vias), len(pads)
+        pts = []
+        for _, t in tr:
+            pts += [(t.x1, t.y1, t.layer), (t.x2, t.y2, t.layer)]
+        adj = defaultdict(set)
+
+        def link(a, b):
+            adj[a].add(b); adj[b].add(a)
+
+        def on_pad(x, y, layer, p):
+            w, h = (p.h, p.w) if int(round(p.angle)) % 180 == 90 else (p.w, p.h)
+            return (layer in p.layers or "*.Cu" in p.layers or p.drill > 0) and abs(x - p.x) <= w / 2 + 0.02 and \
+                abs(y - p.y) <= h / 2 + 0.02
+        for a in range(nE):
+            xa, ya, la = pts[a]
+            for b2 in range(a + 1, nE):
+                xb, yb, lb = pts[b2]
+                if la == lb and abs(xa - xb) < 0.02 and abs(ya - yb) < 0.02:
+                    link(a, b2)
+            for k, v in enumerate(vias):
+                if math.hypot(xa - v.x, ya - v.y) <= v.size / 2 + 0.02:
+                    link(a, nE + k)
+            for k, (_, p) in enumerate(pads):
+                if on_pad(xa, ya, la, p):
+                    link(a, nE + nV + k)
+            for k, z in enumerate(zones):
+                zx0, zy0, zx1, zy1 = z["bbox"]
+                if la in z["layers"] and zx0 <= xa <= zx1 and zy0 <= ya <= zy1:
+                    link(a, nE + nV + nP + k)
+        for k, (_, p) in enumerate(pads):
+            for kz, z in enumerate(zones):
+                zx0, zy0, zx1, zy1 = z["bbox"]
+                if zx0 <= p.x <= zx1 and zy0 <= p.y <= zy1 and set(z["layers"]) & set(p.layers):
+                    link(nE + nV + k, nE + nV + nP + kz)
+        for j in range(len(tr)):
+            link(2 * j, 2 * j + 1)
+        src = {nE + nV + k for k in _source_pads(pads)}
+        for j, (ti, t) in enumerate(tr):
+            # cut this track and collect what the far end reaches
+            a0, a1 = 2 * j, 2 * j + 1
+            seen = {a0}
+            stack = [a1]
+            far = {a1}
+            while stack:
+                u = stack.pop()
+                for w in adj[u]:
+                    if (u, w) in ((a1, a0), (a0, a1)) or w in far:
+                        continue
+                    far.add(w); stack.append(w)
+            if a0 in far:
+                continue                                # part of a loop: shares current, keep it
+            for side in (far, None):
+                if side is None:
+                    seen = {a0}; stack = [a0]
+                    while stack:
+                        u = stack.pop()
+                        for w in adj[u]:
+                            if (u, w) in ((a1, a0), (a0, a1)) or w in seen:
+                                continue
+                            seen.add(w); stack.append(w)
+                    side = seen
+                refs = [pads[k - nE - nV][0] for k in side if nE + nV <= k < nE + nV + nP]
+                if refs and all(re.match(r"^(R|TP)\d", r) for r in refs) and \
+                        len(refs) < len(pads):
+                    out.add(ti)
+                    break
+                if branches is not None and refs and src and not (side & src) and len(refs) < len(pads):
+                    # a branch only if the current already split before it: some load sits on the source side
+                    near = [pads[k][0] for k in range(nP) if (nE + nV + k) not in side and (nE + nV + k) not in src]
+                    if any(not re.match(r"^(C|R|L|FB)\d", r) for r in near):
+                        branches[ti] = sorted(set(refs))
+    return out
+
+
+def _current_points(board: Board, plan, kind) -> List[Dict]:
+    """Track width against the current the plan gives each net (IPC-2221). Pours on the net count as wide copper."""
+    from .ampacity import rise_for, width_for
+    out: List[Dict] = []
+    if not plan:
+        return out
+    cur = {n.name: n.current_a for n in plan.nets if n.current_a}
+    if not cur:
+        return out
+    inner = set(board.copper_layers[1:-1])
+    segs = defaultdict(list)
+    branch: Dict[int, List[str]] = {}
+    sense_only = _sense_branches(board, {k for k in cur}, branch)
+    for i in list(branch):                              # a switch node has no branches: all of it carries the current
+        if kind(board.tracks[i].net) == "switching":
+            del branch[i]
+    for i, t in enumerate(board.tracks):
+        L = math.hypot(t.x2 - t.x1, t.y2 - t.y1)
+        if L >= 0.5 and i not in sense_only:            # pad entries, zero-length stubs and sense taps carry no load
+            segs[_base(t.net)].append((t.width, t.layer, L, branch.get(i)))
+    for name, amps in sorted(cur.items()):
+        if kind(name) == "ground" or name not in segs:
+            continue
+        # short necks at a pad (< 2 mm, at least 40 % of the 10 °C width) are cooled by the pad and the plane
+        w10 = width_for(amps, 10)
+        segs[name] = [sg for sg in segs[name] if not (sg[2] < 2.0 and sg[0] >= 0.4 * w10 * (2 if sg[1] in inner else 1))]
+        if not segs[name]:
+            continue
+        rise = lambda sg: rise_for(amps, sg[0], inner=sg[1] in inner)
+        trunk = [sg for sg in segs[name] if not sg[3]]
+        brs = [sg for sg in segs[name] if sg[3]]
+        # the trunk (between the source and the bulk of the load) carries the full current; a branch feeds only
+        # the parts downstream of it, so it is judged and reported separately
+        for sg in sorted(brs, key=rise, reverse=True)[:1]:
+            if rise(sg) > 15:
+                out.append(_pt("suggestion", "power",
+                               f"{name}: branch to {', '.join(sg[3][:6])} is {sg[0]:.2f} mm ({sg[1]}); at the full "
+                               f"{amps:g} A that would be about {rise(sg):.0f} °C rise",
+                               "a branch carries only what the parts beyond it draw. If they draw well under the "
+                               "rail's total this is fine; the plan gives one current per net, so check this branch "
+                               "against what those parts need", "measured",
+                               refs=sg[3][:6], fix=f"≥ {width_for(amps, 10):.2f} mm only if those parts draw the "
+                                                   "full current"))
+        if not trunk:
+            continue
+        worst = max(trunk, key=rise)
+        w, layer = worst[0], worst[1]
+        is_in = layer in inner
+        dT = rise(worst)
+        narrow = sum(sg[2] for sg in trunk if rise(sg) > 20)
+        need = width_for(amps, 10, inner=is_in)
+        lvl = "concern" if dT > 30 else ("suggestion" if dT > 15 else "good")
+        msg = (f"{name}: {amps:g} A on {w:.2f} mm track ({layer}{', inner' if is_in else ''}) → about {dT:.0f} °C rise"
+               if lvl != "good" else f"{name}: tracks are wide enough for {amps:g} A (≤ {dT:.0f} °C rise)")
+        if lvl != "good" and narrow:
+            msg += f"; {narrow:.0f} mm of the net is this narrow"
+        out.append(_pt(lvl, "power", msg,
+                       "IPC-2221 (1 oz copper): a track's temperature rise grows with current squared over its "
+                       "cross-section; inner layers shed heat half as well. Above ~20–30 °C the copper ages the "
+                       "board and drops voltage; far above it the track can fuse", "measured",
+                       fix="" if lvl == "good" else f"widen to ≥ {need:.2f} mm{' on this inner layer' if is_in else ''} "
+                                                    f"(10 °C rise), use a pour, or move it to an outer layer"))
+    return out
+
+
 def review_layout(board: Board, plan=None, focus: str = "all") -> Dict:
     """Design-review points for a board. focus: all | placement | routing | emc | power | dfm."""
     pts: List[Dict] = []
@@ -205,12 +383,22 @@ def review_layout(board: Board, plan=None, focus: str = "all") -> Dict:
                            "measured"))
 
     # ---------------------------------------------------------------- pairs and fast nets (routing)
+    hs_usb = _usb_high_speed(plan)
     for name, s in m["pairs"].items():
-        if s["skew_mm"] > 1.0:
-            pts.append(_pt("concern" if s["skew_mm"] > 5 else "suggestion", "routing", f"pair {name}: length mismatch {s['skew_mm']} mm ({s['lengths_mm']})",
-                           "skew turns part of the differential signal into common mode, which radiates; for USB full "
-                           "speed a few millimetres is tolerable, for USB high speed keep it under ~1 mm", "measured",
-                           fix="route the pair together, then add a small meander on the shorter line"))
+        usb = "USB" in name.upper()
+        # USB 2.0 high speed (480 Mb/s): match within ~0.15 mm is the usual guide, > 1 mm is a real risk.
+        # Full speed (12 Mb/s, e.g. STM32F4 OTG_FS): edges of 4–20 ns tolerate centimetres of skew; matching then
+        # matters for emissions (common mode), not for the data.
+        lim_s, lim_c = (0.15, 1.0) if (hs_usb or not usb) else (2.0, 25.0)
+        if s["skew_mm"] > lim_s:
+            lvl = "concern" if s["skew_mm"] > lim_c else "suggestion"
+            why = ("skew turns part of the differential signal into common mode, which radiates. " +
+                   ("At USB high speed it also closes the eye." if (usb and hs_usb) else
+                    "At USB full speed (12 Mb/s) the data still arrives correctly, so this is about emissions only."
+                    if usb else ""))
+            pts.append(_pt(lvl, "routing", f"pair {name}: length mismatch {s['skew_mm']} mm ({s['lengths_mm']})",
+                           why.strip(), "measured", fix="route the pair side by side, then add a small meander on the "
+                                                        "shorter line next to where the mismatch starts"))
         elif s["lengths_mm"][0]:
             pts.append(_pt("good", "routing", f"pair {name} matched within {s['skew_mm']} mm", "low common-mode conversion",
                            "measured"))
@@ -228,6 +416,9 @@ def review_layout(board: Board, plan=None, focus: str = "all") -> Dict:
                                "long clock and data lines ring and radiate; shorten by moving the endpoints closer, or "
                                "add a 22–33 Ω series resistor at the driver", "measured"))
 
+    # ---------------------------------------------------------------- current capacity (power)
+    pts += _current_points(board, plan, kind)
+
     # ---------------------------------------------------------------- power: switching nodes, hot loops (power)
     pads_of = defaultdict(list)
     for f in fps:
@@ -236,7 +427,15 @@ def review_layout(board: Board, plan=None, focus: str = "all") -> Dict:
     for n, c in m["critical_nets"].items():
         if c["kind"] != "switching":
             continue
-        if c["length_mm"] > 8:
+        pours = [z for z in board.zones if z["net"] == n and z["bbox"]]
+        if pours:
+            zx0, zy0, zx1, zy1 = pours[0]["bbox"]
+            span = max(zx1 - zx0, zy1 - zy0)
+            pts.append(_pt("good" if span <= 10 else "suggestion", "power",
+                           f"switching node {_base(n)} is a copper pour {zx1 - zx0:.1f} × {zy1 - zy0:.1f} mm"
+                           + (f" plus {c['length_mm']:.1f} mm of track" if c["length_mm"] > 0.5 else ""),
+                           "a compact pour carries the current with a small radiating area", "measured"))
+        elif c["length_mm"] > 8:
             pts.append(_pt("concern", "power", f"switching node {_base(n)}: {c['length_mm']:.1f} mm of track",
                            "the switch node swings the full input voltage at every edge; its copper is an antenna. Keep it "
                            "a short, wide stub between the regulator and the inductor", "measured", fix="move the inductor "
@@ -303,7 +502,8 @@ def review_layout(board: Board, plan=None, focus: str = "all") -> Dict:
         if not pw:
             continue
         best = None
-        for ic in ics:
+        srcs = ics + [f for f in fps if re.match(r"^L\d", f.ref)]
+        for ic in srcs:
             for p in ic.pads:
                 if p.net == pw[0]:
                     d = min(_dist((p.x, p.y), (q.x, q.y)) for q in c.pads)

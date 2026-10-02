@@ -480,6 +480,10 @@ def board_checks(board, plan=None, pin_lookup: Optional[Callable] = None) -> Lis
         pwr = [n for n in nets if n and classify_net(n) != "ground"]
         if not pwr:
             continue
+        # a regulator's output capacitor belongs at its inductor, not at a load's pin
+        lpads = [q for f in board.footprints if re.match(r"^L\d", f.ref) for q in f.pads if q.net == pwr[0]]
+        if lpads and min(math.hypot(p.x - q.x, p.y - q.y) for p in c.pads for q in lpads) <= 5.0:
+            continue
         best = None
         for ic in ics:
             if block and block.get(ic.ref) and block.get(c.ref) and block[ic.ref] != block[c.ref]:

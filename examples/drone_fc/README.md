@@ -50,10 +50,48 @@ The autorouted copy above still had open connections, so the board was finished 
 Result (`output/rl_fc_f405/rl_fc_f405.kicad_pcb`, KiCad DRC): **0 errors, 0 unconnected pads**, 239 pad-to-net
 assignments identical to the plan. Remaining warnings: 52 silkscreen overlaps, 22 silk over copper, 2 silk at the
 board edge (cosmetic; the fab clips silk on pads), and library-path notices from the machine it was routed on.
-71 short segments run on the inner plane layers (41 on In1, 30 on In2) — check the GND return path under the IMU
-SPI lines if you care about the last dB of noise.
+52 short segments run on the inner plane layers (24 on In1, 28 on In2). Check the GND return path under the IMU SPI
+lines if you care about the last dB of noise.
 
 ![routed](img/6_routed_final.png)
+
+### Power-stage rework after the layout review
+
+`review_layout` later found real problems in the routed board above, which DRC could not see because they are about
+current and loop area, not spacing:
+
+- **Switch node:** the buck's switch node (BUCK_SW, 2.5 A) was 22 mm of 0.15 mm track that wound under the
+  regulator. At that current, IPC-2221 puts the rise at roughly 250 °C, and the long loop radiates. The cause was
+  that `setup_netclasses` sized nets only by their declared class, so a switch node with a current but no class got
+  the 0.15 mm default. It now sizes every net that has a current.
+- **+5V rail:** the 2 A rail ran 0.4 mm on the inner layers. Part of it ran on In1 (the GND plane), which also cut
+  the ground plane.
+
+The rework, done with RL PCB's own tools (placement, grid router, `widen_power_tracks`, KiCad DRC after each step):
+
+- U1 is turned 180°, so its PH pin faces the catch diode and the inductor. L1 moves 0.85 mm left.
+- The switch node is now one 6 × 9 mm copper pour joining U1 PH, the bootstrap capacitor, D1 and L1.
+- The input capacitor C1 sits at the VIN pin, with its ground in a small pour tied to the regulator's thermal pad
+  and the planes.
+- The feedback divider (R1, R2) moves next to the FB pin. It senses the output through a thin trace.
+- C5 (22 µF) moves under L1's output as the buck's output capacitor; C4 stays at the LDO.
+- +5V leaves the inner layers. A 1.0 mm trunk runs on B.Cu to the LDO and receiver corner, and a 0.8 mm branch runs
+  to the VTX connector.
+- The rest of the +5V and VBAT copper is widened as far as DRC allows.
+
+![power stage before and after](img/7_power_rework.png)
+
+After the rework, `review_layout` reports no power concerns (it had three). DRC is still 0 errors and 0 unconnected
+pads, and the Gerbers, drill, positions, STEP, CPL and `mech.json` are regenerated.
+
+Two points are left for the engineer:
+
+- **USB pair length mismatch (10.4 mm):** this stays as it is. USB_DP and USB_DM leave the ESD clamp in the opposite
+  order to the one in which they arrive at the MCU, so routing them side by side needs a crossing. At USB full speed
+  (12 Mb/s, the F405's OTG_FS) this mismatch does not affect the data. The clean fix is a schematic change: swap the
+  clamp's two channels (USBLC6-2 channels are interchangeable), then route both lines together.
+- **VBAT width:** the plan gives VBAT 3 A, which leaves its 1.0 mm tracks at about 17 °C rise. The board itself draws
+  well under 2 A from the battery, so check the plan's figure before widening further.
 
 Manufacturing files are in `output/rl_fc_f405/fab/`: Gerbers + drill (+ drill map) for the 4 copper layers,
 `positions.csv`, and `jlcpcb/` BOM + CPL with LCSC numbers. Five BOM lines have no LCSC number on purpose:

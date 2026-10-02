@@ -148,8 +148,30 @@ def _nat(s):
     return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", s)]
 
 
+def _crop_png(png: str, margin: int = 20) -> str:
+    """Trim the white page around a render, so the board fills the image."""
+    try:
+        from PIL import Image, ImageChops
+        im = Image.open(png).convert("RGB")
+        bg = Image.new("RGB", im.size, (255, 255, 255))
+        box = ImageChops.difference(im, bg).point(lambda v: 255 if v > 12 else 0).getbbox()
+        if box:
+            x0, y0, x1, y1 = box
+            im.crop((max(0, x0 - margin), max(0, y0 - margin), min(im.width, x1 + margin),
+                     min(im.height, y1 + margin))).save(png)
+    except Exception:
+        pass
+    return png
+
+
 def _render_svg_to_png(svg: str, width: int = 2000) -> str:
-    """SVG → PNG. Tries cairosvg, then PyMuPDF (self-contained on Windows), else returns the SVG path."""
+    """SVG → PNG (cropped to the drawing). Tries cairosvg, then PyMuPDF (self-contained on Windows), else returns
+    the SVG path."""
+    png = _render_svg_raw(svg, width)
+    return _crop_png(png) if png.endswith(".png") else png
+
+
+def _render_svg_raw(svg: str, width: int = 2000) -> str:
     png = os.path.splitext(svg)[0] + ".png"
     try:
         import cairosvg
@@ -1253,11 +1275,17 @@ def t_stackup(s: Session, **kw):
       S({"apply": p(BOOL, "Write to the project", default=False),
          "overrides": p("object", "Per-class overrides, e.g. {'Power': {'track_width': 0.8}}")}), writes=True)
 def t_netclasses(s: Session, apply: bool = False, overrides: dict = None):
-    from ..pcb.assist import NETCLASS_DEFAULTS, apply_netclasses, netclasses_from_plan
-    a = netclasses_from_plan(s.plan())
+    from ..pcb.assist import NETCLASS_DEFAULTS, apply_netclasses, current_class_widths, netclasses_from_plan
+    plan = s.plan()
+    a = netclasses_from_plan(plan)
+    sized = current_class_widths(plan)              # IPC-2221 widths from the plan's currents
+    merged = {k: dict(v) for k, v in sized.items()}
+    for k, v in (overrides or {}).items():
+        merged.setdefault(k, {}).update(v)
     if not apply:
-        return {"preview": a, "class_parameters_mm": {k: NETCLASS_DEFAULTS[k] for k in a}}
-    return apply_netclasses(s.project, a, overrides)
+        return {"preview": a, "class_parameters_mm": {k: dict(NETCLASS_DEFAULTS[k], **merged.get(k, {})) for k in a},
+                "sized_by_current": sized}
+    return apply_netclasses(s.project, a, merged)
 
 
 @tool("add_design_rules", "Append custom DRC rules to <project>.kicad_dru. Give complete (rule ...) expressions in KiCad "
@@ -1384,6 +1412,55 @@ def t_finish(s: Session, planes: Dict = None, source: str = ""):
     tail = "\n".join(l for l in (r.stdout + r.stderr).splitlines() if "swig/python" not in l)[-4000:]
     return {"finished": out if os.path.exists(out) else None, "log": tail,
             "next": "open the .finished board in KiCad, review, then rename it to the main board or run DRC/export"}
+
+
+@tool("widen_power_tracks", "Widen the tracks of nets that carry current (the plan's current_a) towards the width "
+      "IPC-2221 asks for (10 °C rise), as far as KiCad's DRC allows: each segment keeps the widest width that passes, "
+      "or its old width. Writes <name>.widened.kicad_pcb unless in_place=true (board closed in KiCad).",
+      S({"nets": p("array", "Nets to widen (default: every net with a current in the plan)", items={"type": STR}),
+         "in_place": p(BOOL, "Overwrite the board instead of writing a copy", default=False)}), writes=True)
+def t_widen(s: Session, nets: List[str] = None, in_place: bool = False):
+    import subprocess
+    import sys
+    from ..kicad.paths import kicad_python
+    from ..pcb.ampacity import width_for
+    from ..pcb.board import Board
+    plan = s.plan()
+    b = Board(s.pcb_path)
+    board_nets = {t.net for t in b.tracks}
+    targets = {}
+    for n in plan.nets:
+        if not n.current_a or (nets and n.name not in nets):
+            continue
+        if n.name.upper() in ("GND", "GNDA", "AGND", "PGND"):
+            continue
+        full = next((x for x in board_nets if x == n.name or x.split("/")[-1] == n.name), None)
+        if not full:
+            continue
+        w10 = round(width_for(n.current_a, 10) + 0.049, 1)
+        ws = sorted({w for w in (w10, round(w10 * 0.8, 1), round(w10 * 0.6, 1), round(w10 * 0.45, 1)) if w >= 0.25},
+                    reverse=True)
+        if ws and any(t.width < ws[0] - 1e-6 for t in b.tracks if t.net == full):
+            targets[full] = ws
+    if not targets:
+        raise UserError("no net with a current in the plan has tracks on the board (set current_a with plan_set_info)")
+    base = os.path.splitext(s.pcb_path)[0]
+    out = s.pcb_path if in_place else base + ".widened.kicad_pcb"
+    if not in_place:
+        import shutil
+        shutil.copy(base + ".kicad_pro", base + ".widened.kicad_pro")
+    py = kicad_python() or sys.executable
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    args = [py, "-m", "rlpcb.pcb.widen", s.pcb_path, out, base + ".widen_drc.rpt"] + \
+        [f"{k}:{','.join(str(w) for w in v)}" for k, v in targets.items()]
+    r = subprocess.run(args, capture_output=True, text=True, timeout=1800, env={**os.environ, "PYTHONPATH": root})
+    try:
+        res = json.loads(r.stdout[r.stdout.index("{"):])
+    except ValueError:
+        raise UserError("widening failed: " + (r.stderr or r.stdout)[-1500:])
+    res["targets_mm"] = targets
+    res["next"] = "review_layout (power points) to see what is still narrow; open the board in KiCad to check"
+    return res
 
 
 @tool("mech_export", "Write <project>/<name>.mech.json: the board's mechanical interface for the product around it "

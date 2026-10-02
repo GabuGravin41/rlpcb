@@ -121,8 +121,11 @@ def export_sch_pdf(sch_path: str, out: Optional[str] = None) -> str:
 
 def export_pcb_svg(pcb_path: str, layers: str = "F.Cu,B.Cu,F.SilkS,Edge.Cuts", out: Optional[str] = None) -> str:
     out = out or tempfile.mktemp(suffix=".svg")
-    args = ["pcb", "export", "svg", "--layers", layers, "--exclude-drawing-sheet", "-o", out, pcb_path]
-    r = _run(args)
+    # page sized to the board (KiCad 7+), else the whole sheet (the PNG step crops it)
+    r = _run(["pcb", "export", "svg", "--layers", layers, "--exclude-drawing-sheet", "--page-size-mode", "2",
+              "-o", out, pcb_path])
+    if not os.path.exists(out):
+        r = _run(["pcb", "export", "svg", "--layers", layers, "--exclude-drawing-sheet", "-o", out, pcb_path])
     if not os.path.exists(out):
         # KiCad 9 changed option names; try the per-layer mode fallback
         r2 = _run(["pcb", "export", "svg", "--layers", layers, "--mode-single", "-o", out, pcb_path])

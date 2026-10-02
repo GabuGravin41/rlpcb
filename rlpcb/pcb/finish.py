@@ -108,7 +108,7 @@ def _poly_points(item, layer, clearance):
 
 class Grid:
     def __init__(self, board, net_name: str, res_mm=0.05, width_mm=0.2, clearance_mm=0.13, via_d=0.6, via_h=0.3,
-                 edge_mm=0.3):
+                 edge_mm=0.3, track_mm=None):
         from matplotlib.path import Path
         self.b = board
         self.res = MM(res_mm)
@@ -121,6 +121,8 @@ class Grid:
         # signal nets: 0.15 mm; supply nets: 0.25 mm (a finishing stub, not the main feed)
         power = re.match(r"^(\+|.*/\+|.*VBUS|.*VBAT|GND$)", net_name) is not None
         self.width = MM(0.25) if power else MM(0.15)
+        if track_mm:                                   # explicit width (power feeds sized for their current)
+            self.width = MM(track_mm)
         clr = MM(clearance_mm)
         netcode = board.GetNetcodeFromNetname(net_name)
         self.netcode = netcode

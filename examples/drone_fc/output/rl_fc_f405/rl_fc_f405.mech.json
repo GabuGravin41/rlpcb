@@ -2,8 +2,8 @@
  "schema": "rl-mech/1",
  "board": "rl_fc_f405",
  "source": "/home/claude/rlpcb/examples/drone_fc/output/rl_fc_f405/rl_fc_f405.kicad_pcb",
- "source_mtime": 1790496812.8465264,
- "generated": 1790497536.5560284,
+ "source_mtime": 1790928173.0899253,
+ "generated": 1790928176.366817,
  "frame": "origin at outline centre; +x KiCad +x; +y KiCad -y; z=0 bottom face",
  "outline_mm": {
   "size": [
@@ -427,10 +427,10 @@
    "height_source": "table",
    "populated": true,
    "bbox_mm": [
-    -16.8,
-    -1.4,
-    -14.5,
-    3.2
+    -14.95,
+    -7.6,
+    -10.35,
+    -5.3
    ]
   },
   {
@@ -441,10 +441,10 @@
    "height_source": "table",
    "populated": true,
    "bbox_mm": [
-    -13.77,
-    -7.53,
-    -12.83,
-    -5.67
+    -16.33,
+    0.13,
+    -14.47,
+    1.07
    ]
   },
   {
@@ -497,10 +497,10 @@
    "height_source": "table",
    "populated": true,
    "bbox_mm": [
-    -15.46,
-    -6.16,
-    -14.54,
-    -4.34
+    -8.71,
+    -2.41,
+    -7.79,
+    -0.59
    ]
   },
   {
@@ -623,10 +623,10 @@
    "height_source": "table",
    "populated": true,
    "bbox_mm": [
-    -12.57,
-    -7.33,
-    -11.63,
-    -5.47
+    -16.33,
+    1.53,
+    -14.47,
+    2.47
    ]
   },
   {
@@ -728,20 +728,6 @@
    ]
   },
   {
-   "ref": "C5",
-   "footprint": "C_0805_2012Metric",
-   "side": "top",
-   "height_mm": 1.25,
-   "height_source": "table",
-   "populated": true,
-   "bbox_mm": [
-    -11.0,
-    9.02,
-    -7.6,
-    10.98
-   ]
-  },
-  {
    "ref": "C7",
    "footprint": "C_0603_1608Metric",
    "side": "top",
@@ -791,9 +777,9 @@
    "height_source": "table",
    "populated": true,
    "bbox_mm": [
-    -11.45,
+    -10.3,
     -12.55,
-    -2.55,
+    -1.4,
     -5.45
    ]
   },
@@ -1050,6 +1036,20 @@
    ]
   },
   {
+   "ref": "C5",
+   "footprint": "C_0805_2012Metric",
+   "side": "bottom",
+   "height_mm": 1.25,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -4.38,
+    -11.1,
+    -2.42,
+    -7.7
+   ]
+  },
+  {
    "ref": "C8",
    "footprint": "C_0402_1005Metric",
    "side": "bottom",
@@ -1099,10 +1099,10 @@
    "height_source": "table",
    "populated": true,
    "bbox_mm": [
-    -13.3,
-    0.15,
-    -11.0,
-    4.75
+    -16.3,
+    -7.6,
+    -11.7,
+    -5.3
    ]
   },
   {
