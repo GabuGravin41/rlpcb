@@ -1,0 +1,6 @@
+# Core has no hard dependencies beyond the Python standard library (3.10+).
+mcp>=1.2            # MCP server for Claude Desktop / Claude Code
+kicad-python>=0.3   # live control of KiCad 9+/10 through the official IPC API (kipy)
+pymupdf>=1.24       # render schematics to images, read PDF books/datasheets
+pytest>=7           # tests
+easyeda2kicad>=0.8   # import LCSC/JLCPCB parts (symbol+footprint+3D)

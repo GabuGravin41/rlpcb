@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rlpcb"
+version = "0.1.0"
+description = "RL PCB — an AI design copilot for KiCad: parts, plans, placement, wiring guidance, verification, PCB assistance"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Dalton Omondi"}]
+dependencies = []
+
+[project.optional-dependencies]
+full = ["mcp>=1.2", "kicad-python>=0.3", "pymupdf>=1.24"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+rlpcb = "rlpcb.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["rlpcb*"]

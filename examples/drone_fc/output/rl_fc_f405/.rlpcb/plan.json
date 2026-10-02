@@ -1,0 +1,2003 @@
+{
+ "name": "RL-FC F405",
+ "description": "5-inch quad flight controller, Betaflight-compatible pinout",
+ "blocks": [
+  {
+   "id": "power",
+   "title": "Power: 2-6S input, 5 V buck, 3.3 V LDO, battery sensing",
+   "purpose": "",
+   "notes": "",
+   "layout_notes": "Buck hot loop (VIN cap - U1 - D1) as small as possible, far from the IMU",
+   "reference_design": ""
+  },
+  {
+   "id": "mcu",
+   "title": "STM32F405 core: decoupling, clock, reset, boot, SWD, USB",
+   "purpose": "",
+   "notes": "",
+   "layout_notes": "Crystal + caps within 5 mm of PH0/PH1; VCAP caps at the pins",
+   "reference_design": ""
+  },
+  {
+   "id": "sensors",
+   "title": "IMU (SPI1), barometer (I2C1), blackbox flash (SPI3)",
+   "purpose": "",
+   "notes": "",
+   "layout_notes": "IMU at the board centre, away from motor/ESC wiring and the buck inductor",
+   "reference_design": ""
+  },
+  {
+   "id": "io",
+   "title": "ESC / receiver / VTX / USB connectors and LEDs",
+   "purpose": "",
+   "notes": "",
+   "layout_notes": "Connectors on the board edges; USB ESD part right at the connector",
+   "reference_design": ""
+  }
+ ],
+ "components": [
+  {
+   "ref": "J1",
+   "lib_id": "Connector_Generic:Conn_01x02",
+   "value": "BATT",
+   "footprint": "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm",
+   "block": "power",
+   "role": "Battery pads (VBAT, GND)",
+   "fields": {
+    "Sourcing": "solder pads, no part"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "D2",
+   "lib_id": "Diode:SMAJ28A",
+   "value": "SMAJ28A",
+   "footprint": "Diode_SMD:D_SMA",
+   "block": "power",
+   "role": "TVS: clamps ESC/motor spikes on VBAT (28 V standoff > 25.2 V 6S)",
+   "fields": {
+    "MPN": "SMAJ28A-13-F",
+    "Manufacturer": "Diodes Inc",
+    "LCSC": "C134977"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C1",
+   "lib_id": "Device:C",
+   "value": "10u 50V",
+   "footprint": "Capacitor_SMD:C_1206_3216Metric",
+   "block": "power",
+   "role": "Buck input cap (X7R) - hot loop",
+   "fields": {
+    "MPN": "CL31A106KBHNNNE",
+    "Manufacturer": "Samsung",
+    "LCSC": "C13585",
+    "Sourcing": "X5R 1206"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C2",
+   "lib_id": "Device:C",
+   "value": "10u 50V",
+   "footprint": "Capacitor_SMD:C_1206_3216Metric",
+   "block": "power",
+   "role": "Buck input cap (X7R)",
+   "fields": {
+    "MPN": "CL31A106KBHNNNE",
+    "Manufacturer": "Samsung",
+    "LCSC": "C13585",
+    "Sourcing": "X5R 1206"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U1",
+   "lib_id": "Regulator_Switching:TPS5430DDA",
+   "value": "TPS5430",
+   "footprint": "Package_SO:TI_SO-PowerPAD-8_ThermalVias",
+   "block": "power",
+   "role": "5 V / 3 A buck, 500 kHz",
+   "fields": {
+    "MPN": "TPS5430DDAR",
+    "Manufacturer": "Texas Instruments",
+    "LCSC": "C9864"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C3",
+   "lib_id": "Device:C",
+   "value": "10n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "power",
+   "role": "Bootstrap cap BOOT-PH",
+   "fields": {
+    "MPN": "CL05B103KB5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C15195"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "D1",
+   "lib_id": "Diode:B340",
+   "value": "B340A",
+   "footprint": "Diode_SMD:D_SMA",
+   "block": "power",
+   "role": "Catch diode (40 V 3 A Schottky)",
+   "fields": {
+    "MPN": "B340A-13-F",
+    "Manufacturer": "Diodes Inc",
+    "LCSC": "C85098"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "L1",
+   "lib_id": "Device:L",
+   "value": "15u",
+   "footprint": "Inductor_SMD:L_Bourns_SRP7028A_7.3x6.6mm",
+   "block": "power",
+   "role": "Buck inductor (calc 13.4 uH, Isat > 3 A; SRP7028A-150M size, 7.3x6.6 mm, chosen to fit the 36 mm board; confirm Isat in datasheet)",
+   "fields": {
+    "MPN": "SRP7028A-150M",
+    "Manufacturer": "Bourns",
+    "Sourcing": "not stocked at LCSC when checked: consign it, or use SRP7028A-100M (C2687402, 10 uH) after re-checking buck ripple"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C4",
+   "lib_id": "Device:C",
+   "value": "22u 10V",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "block": "power",
+   "role": "Buck output cap",
+   "fields": {
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung",
+    "LCSC": "C45783",
+    "Sourcing": "25 V part (exceeds 10 V)"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C5",
+   "lib_id": "Device:C",
+   "value": "22u 10V",
+   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "block": "power",
+   "role": "Buck output cap",
+   "fields": {
+    "MPN": "CL21A226MAQNNNE",
+    "Manufacturer": "Samsung",
+    "LCSC": "C45783",
+    "Sourcing": "25 V part (exceeds 10 V)"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R1",
+   "lib_id": "Device:R",
+   "value": "9.31k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "power",
+   "role": "FB top: Vout = 1.221*(1+9.31/3.01) = 4.998 V",
+   "fields": {
+    "MPN": "RNCF0402BKE9K31",
+    "Manufacturer": "Stackpole",
+    "LCSC": "C4174801",
+    "Sourcing": "0.1 % thin film"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R2",
+   "lib_id": "Device:R",
+   "value": "3.01k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "power",
+   "role": "FB bottom",
+   "fields": {
+    "Sourcing": "1 % 0402: pick at order time (search 3.01k 0402 1%)"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U2",
+   "lib_id": "Regulator_Linear:AP2112K-3.3",
+   "value": "AP2112K-3.3",
+   "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+   "block": "power",
+   "role": "3.3 V 600 mA LDO",
+   "fields": {
+    "MPN": "AP2112K-3.3TRG1",
+    "Manufacturer": "Diodes Inc",
+    "LCSC": "C51118"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C6",
+   "lib_id": "Device:C",
+   "value": "1u",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "power",
+   "role": "LDO input",
+   "fields": {
+    "MPN": "CL05A105KA5NQNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C52923"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C7",
+   "lib_id": "Device:C",
+   "value": "4.7u",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "block": "power",
+   "role": "LDO output / 3.3 V bulk",
+   "fields": {
+    "MPN": "CL10A475KO8NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C19666"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R3",
+   "lib_id": "Device:R",
+   "value": "10k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "power",
+   "role": "VBAT divider top (25.2 V -> 2.29 V)",
+   "fields": {
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25744"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R4",
+   "lib_id": "Device:R",
+   "value": "1k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "power",
+   "role": "VBAT divider bottom",
+   "fields": {
+    "MPN": "0402WGF1001TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C11702"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C8",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "power",
+   "role": "VBAT ADC filter",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U3",
+   "lib_id": "MCU_ST_STM32F4:STM32F405RGTx",
+   "value": "STM32F405RGT6",
+   "footprint": "Package_QFP:LQFP-64_10x10mm_P0.5mm",
+   "block": "mcu",
+   "role": "Flight MCU",
+   "fields": {
+    "MPN": "STM32F405RGT6",
+    "Manufacturer": "ST",
+    "LCSC": "C15742"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C10",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VDD pin 19 decoupling",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C11",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VDD pin 32 decoupling",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C12",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VDD pin 48 decoupling",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C13",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VDD pin 64 decoupling",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C14",
+   "lib_id": "Device:C",
+   "value": "4.7u",
+   "footprint": "Capacitor_SMD:C_0603_1608Metric",
+   "block": "mcu",
+   "role": "MCU bulk",
+   "fields": {
+    "MPN": "CL10A475KO8NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C19666"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C15",
+   "lib_id": "Device:C",
+   "value": "2.2u",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VCAP_1 (low-ESR, required by the internal regulator)",
+   "fields": {
+    "MPN": "CL05A225MQ5NSNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C12530",
+    "Sourcing": "6.3 V: fine for VCAP (1.2 V) and 3.3 V rails"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C16",
+   "lib_id": "Device:C",
+   "value": "2.2u",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VCAP_2",
+   "fields": {
+    "MPN": "CL05A225MQ5NSNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C12530",
+    "Sourcing": "6.3 V: fine for VCAP (1.2 V) and 3.3 V rails"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "FB1",
+   "lib_id": "Device:FerriteBead_Small",
+   "value": "600R@100MHz",
+   "footprint": "Inductor_SMD:L_0603_1608Metric",
+   "block": "mcu",
+   "role": "VDDA filter",
+   "fields": {
+    "MPN": "GZ1608D601TF",
+    "Manufacturer": "Sunlord",
+    "LCSC": "C1002"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C17",
+   "lib_id": "Device:C",
+   "value": "1u",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VDDA bulk",
+   "fields": {
+    "MPN": "CL05A105KA5NQNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C52923"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C18",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "VDDA HF",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "Y1",
+   "lib_id": "Device:Crystal_GND24",
+   "value": "8MHz",
+   "footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "block": "mcu",
+   "role": "HSE 8 MHz, CL 12 pF",
+   "fields": {
+    "Sourcing": "8 MHz 3225, CL = 12 pF to match the 18 pF load caps; a 20 pF-CL crystal needs 33 pF caps"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C19",
+   "lib_id": "Device:C",
+   "value": "18p",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "Crystal load (2*(12-3) pF)",
+   "fields": {
+    "MPN": "0402CG180J500NT",
+    "Manufacturer": "FH",
+    "LCSC": "C1549"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C20",
+   "lib_id": "Device:C",
+   "value": "18p",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "Crystal load",
+   "fields": {
+    "MPN": "0402CG180J500NT",
+    "Manufacturer": "FH",
+    "LCSC": "C1549"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C21",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "mcu",
+   "role": "NRST filter",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R5",
+   "lib_id": "Device:R",
+   "value": "10k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "mcu",
+   "role": "BOOT0 pull-down (run from flash)",
+   "fields": {
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25744"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "SW1",
+   "lib_id": "Switch:SW_Push",
+   "value": "BOOT",
+   "footprint": "Button_Switch_SMD:SW_SPST_TL3342",
+   "block": "mcu",
+   "role": "Hold at power-up for DFU bootloader",
+   "fields": {
+    "MPN": "TL3342F160QG",
+    "Manufacturer": "E-Switch",
+    "LCSC": "C2886898"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "D3",
+   "lib_id": "Device:LED",
+   "value": "blue",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "block": "mcu",
+   "role": "Status LED (PB5)",
+   "fields": {
+    "MPN": "KT-0603B",
+    "Manufacturer": "KENTO",
+    "LCSC": "C2288"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R6",
+   "lib_id": "Device:R",
+   "value": "1k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "mcu",
+   "role": "Status LED resistor",
+   "fields": {
+    "MPN": "0402WGF1001TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C11702"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "D4",
+   "lib_id": "Device:LED",
+   "value": "green",
+   "footprint": "LED_SMD:LED_0603_1608Metric",
+   "block": "mcu",
+   "role": "3.3 V power LED",
+   "fields": {
+    "MPN": "KT-0603G",
+    "Manufacturer": "KENTO",
+    "LCSC": "C12624"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R7",
+   "lib_id": "Device:R",
+   "value": "1k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "mcu",
+   "role": "Power LED resistor",
+   "fields": {
+    "MPN": "0402WGF1001TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C11702"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U4",
+   "lib_id": "Sensor_Motion:ICM-20602",
+   "value": "ICM-20602",
+   "footprint": "Package_LGA:LGA-16_3x3mm_P0.5mm_LayoutBorder3x5y",
+   "block": "sensors",
+   "role": "6-axis IMU (SPI1)",
+   "fields": {
+    "MPN": "ICM-20602",
+    "Manufacturer": "TDK InvenSense",
+    "LCSC": "C97633"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "FB2",
+   "lib_id": "Device:FerriteBead_Small",
+   "value": "600R@100MHz",
+   "footprint": "Inductor_SMD:L_0603_1608Metric",
+   "block": "sensors",
+   "role": "Isolates IMU supply from digital noise",
+   "fields": {
+    "MPN": "GZ1608D601TF",
+    "Manufacturer": "Sunlord",
+    "LCSC": "C1002"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C22",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "sensors",
+   "role": "IMU VDD",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C23",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "sensors",
+   "role": "IMU VDDIO",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C24",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "sensors",
+   "role": "IMU REGOUT (per datasheet)",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C25",
+   "lib_id": "Device:C",
+   "value": "2.2u",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "sensors",
+   "role": "IMU branch bulk",
+   "fields": {
+    "MPN": "CL05A225MQ5NSNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C12530",
+    "Sourcing": "6.3 V: fine for VCAP (1.2 V) and 3.3 V rails"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U5",
+   "lib_id": "Sensor_Pressure:BMP280",
+   "value": "BMP280",
+   "footprint": "Package_LGA:Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering",
+   "block": "sensors",
+   "role": "Barometer (I2C addr 0x76)",
+   "fields": {
+    "MPN": "BMP280",
+    "Manufacturer": "Bosch",
+    "LCSC": "C83291"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C26",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "sensors",
+   "role": "Baro decoupling",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R8",
+   "lib_id": "Device:R",
+   "value": "4.7k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "sensors",
+   "role": "I2C SCL pull-up",
+   "fields": {
+    "MPN": "0402WGF4701TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25900"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R9",
+   "lib_id": "Device:R",
+   "value": "4.7k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "sensors",
+   "role": "I2C SDA pull-up",
+   "fields": {
+    "MPN": "0402WGF4701TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25900"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U6",
+   "lib_id": "Memory_Flash:W25Q128JVS",
+   "value": "W25Q128JV",
+   "footprint": "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm",
+   "block": "sensors",
+   "role": "Blackbox flash (SPI3)",
+   "fields": {
+    "MPN": "W25Q128JVSIQ",
+    "Manufacturer": "Winbond",
+    "LCSC": "C97521"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "C27",
+   "lib_id": "Device:C",
+   "value": "100n",
+   "footprint": "Capacitor_SMD:C_0402_1005Metric",
+   "block": "sensors",
+   "role": "Flash decoupling",
+   "fields": {
+    "MPN": "CL05B104KO5NNNC",
+    "Manufacturer": "Samsung",
+    "LCSC": "C1525"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R10",
+   "lib_id": "Device:R",
+   "value": "10k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "sensors",
+   "role": "Flash CS pull-up (deselected during boot)",
+   "fields": {
+    "MPN": "0402WGF1002TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25744"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "J2",
+   "lib_id": "Connector:USB_C_Receptacle_USB2.0_16P",
+   "value": "USB-C",
+   "footprint": "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal",
+   "block": "io",
+   "role": "Configuration / DFU",
+   "fields": {
+    "MPN": "USB4105-GF-A",
+    "Manufacturer": "GCT",
+    "LCSC": "C3020560"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R11",
+   "lib_id": "Device:R",
+   "value": "5.1k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "io",
+   "role": "CC1 pull-down (device)",
+   "fields": {
+    "MPN": "0402WGF5101TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25905"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "R12",
+   "lib_id": "Device:R",
+   "value": "5.1k",
+   "footprint": "Resistor_SMD:R_0402_1005Metric",
+   "block": "io",
+   "role": "CC2 pull-down (device)",
+   "fields": {
+    "MPN": "0402WGF5101TCE",
+    "Manufacturer": "UNI-ROYAL",
+    "LCSC": "C25905"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "U7",
+   "lib_id": "Power_Protection:USBLC6-2SC6",
+   "value": "USBLC6-2SC6",
+   "footprint": "Package_TO_SOT_SMD:SOT-23-6",
+   "block": "io",
+   "role": "USB ESD protection",
+   "fields": {
+    "MPN": "USBLC6-2SC6",
+    "Manufacturer": "ST",
+    "LCSC": "C7519"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "D5",
+   "lib_id": "Diode:SS34",
+   "value": "SS34",
+   "footprint": "Diode_SMD:D_SMA",
+   "block": "io",
+   "role": "VBUS -> 5 V OR-ing (USB power without battery)",
+   "fields": {
+    "MPN": "SS34",
+    "Manufacturer": "MDD",
+    "LCSC": "C8678"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "J3",
+   "lib_id": "Connector_Generic:Conn_01x08",
+   "value": "ESC",
+   "footprint": "Connector_JST:JST_SH_SM08B-SRSS-TB_1x08-1MP_P1.00mm_Horizontal",
+   "block": "io",
+   "role": "4-in-1 ESC: VBAT GND CUR TLM M1-M4",
+   "fields": {
+    "MPN": "SM08B-SRSS-TB(LF)(SN)",
+    "Manufacturer": "JST",
+    "LCSC": "C160407",
+    "Sourcing": "JLCPCB page lists C5306078"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "J4",
+   "lib_id": "Connector_Generic:Conn_01x04",
+   "value": "RX",
+   "footprint": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "block": "io",
+   "role": "Receiver (UART1)",
+   "fields": {
+    "MPN": "SM04B-SRSS-TB(LF)(SN)",
+    "Manufacturer": "JST",
+    "LCSC": "C160404"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "J5",
+   "lib_id": "Connector_Generic:Conn_01x04",
+   "value": "VTX",
+   "footprint": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "block": "io",
+   "role": "Video transmitter (UART3)",
+   "fields": {
+    "MPN": "SM04B-SRSS-TB(LF)(SN)",
+    "Manufacturer": "JST",
+    "LCSC": "C160404"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  },
+  {
+   "ref": "J6",
+   "lib_id": "Connector_Generic:Conn_01x04",
+   "value": "SWD",
+   "footprint": "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical",
+   "block": "io",
+   "role": "Debug",
+   "fields": {
+    "Sourcing": "1.27 mm header pads: leave unpopulated (DNP), probe or solder wires"
+   },
+   "notes": "",
+   "unit_count": 1,
+   "dnp": false,
+   "sheet": ""
+  }
+ ],
+ "nets": [
+  {
+   "name": "VBAT",
+   "nodes": [
+    "J1.1",
+    "D2.1",
+    "C1.1",
+    "C2.1",
+    "U1.7",
+    "R3.1",
+    "J3.1"
+   ],
+   "net_class": "power",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": 3,
+   "voltage_v": 25.2
+  },
+  {
+   "name": "GND",
+   "nodes": [
+    "J1.2",
+    "D2.2",
+    "C1.2",
+    "C2.2",
+    "U1.6",
+    "U1.9",
+    "D1.2",
+    "C4.2",
+    "C5.2",
+    "R2.2",
+    "U2.2",
+    "C6.2",
+    "C7.2",
+    "R4.2",
+    "C8.2",
+    "U3.18",
+    "U3.63",
+    "U3.12",
+    "C10.2",
+    "C11.2",
+    "C12.2",
+    "C13.2",
+    "C14.2",
+    "C15.2",
+    "C16.2",
+    "C17.2",
+    "C18.2",
+    "Y1.2",
+    "Y1.4",
+    "C19.2",
+    "C20.2",
+    "C21.2",
+    "R5.2",
+    "D3.1",
+    "D4.1",
+    "U4.9",
+    "U4.10",
+    "U4.11",
+    "U4.12",
+    "U4.13",
+    "U4.15",
+    "U4.8",
+    "C22.2",
+    "C23.2",
+    "C24.2",
+    "C25.2",
+    "U5.1",
+    "U5.7",
+    "U5.5",
+    "C26.2",
+    "U6.4",
+    "C27.2",
+    "J2.A1",
+    "J2.A12",
+    "J2.B1",
+    "J2.B12",
+    "J2.S1",
+    "R11.2",
+    "R12.2",
+    "U7.2",
+    "J3.2",
+    "J4.2",
+    "J5.2",
+    "J6.4"
+   ],
+   "net_class": "ground",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "BUCK_SW",
+   "nodes": [
+    "U1.8",
+    "D1.1",
+    "L1.1",
+    "C3.2"
+   ],
+   "net_class": "",
+   "notes": "Switch node: short and fat, keep away from IMU and crystal",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": 2.5,
+   "voltage_v": null
+  },
+  {
+   "name": "BUCK_BOOT",
+   "nodes": [
+    "U1.1",
+    "C3.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "BUCK_FB",
+   "nodes": [
+    "U1.4",
+    "R1.2",
+    "R2.1"
+   ],
+   "net_class": "",
+   "notes": "Route FB away from the switch node; R1/R2 next to U1",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "+5V",
+   "nodes": [
+    "L1.2",
+    "C4.1",
+    "C5.1",
+    "R1.1",
+    "U2.1",
+    "U2.3",
+    "C6.1",
+    "D5.1",
+    "J4.1",
+    "J5.1"
+   ],
+   "net_class": "power",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": 2,
+   "voltage_v": null
+  },
+  {
+   "name": "+3V3",
+   "nodes": [
+    "U2.5",
+    "C7.1",
+    "U3.19",
+    "U3.32",
+    "U3.48",
+    "U3.64",
+    "U3.1",
+    "C10.1",
+    "C11.1",
+    "C12.1",
+    "C13.1",
+    "C14.1",
+    "FB1.1",
+    "R7.1",
+    "SW1.2",
+    "FB2.1",
+    "U5.8",
+    "U5.6",
+    "U5.2",
+    "C26.1",
+    "R8.1",
+    "R9.1",
+    "U6.8",
+    "U6.3",
+    "U6.7",
+    "C27.1",
+    "R10.1",
+    "J6.1"
+   ],
+   "net_class": "power",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": 0.4,
+   "voltage_v": null
+  },
+  {
+   "name": "VBAT_SENSE",
+   "nodes": [
+    "R3.2",
+    "R4.1",
+    "C8.1",
+    "U3.10"
+   ],
+   "net_class": "analog",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "VCAP1",
+   "nodes": [
+    "U3.31",
+    "C15.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "VCAP2",
+   "nodes": [
+    "U3.47",
+    "C16.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "+3V3A",
+   "nodes": [
+    "FB1.2",
+    "U3.13",
+    "C17.1",
+    "C18.1"
+   ],
+   "net_class": "analog",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "OSC_IN",
+   "nodes": [
+    "U3.5",
+    "Y1.1",
+    "C19.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "OSC_OUT",
+   "nodes": [
+    "U3.6",
+    "Y1.3",
+    "C20.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "NRST",
+   "nodes": [
+    "U3.7",
+    "C21.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "BOOT0",
+   "nodes": [
+    "U3.60",
+    "R5.1",
+    "SW1.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "LED_STATUS",
+   "nodes": [
+    "U3.57",
+    "R6.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "LED_STATUS_K",
+   "nodes": [
+    "R6.2",
+    "D3.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "LED_PWR",
+   "nodes": [
+    "R7.2",
+    "D4.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SWDIO",
+   "nodes": [
+    "U3.46",
+    "J6.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SWCLK",
+   "nodes": [
+    "U3.49",
+    "J6.3"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "+3V3_IMU",
+   "nodes": [
+    "FB2.2",
+    "U4.16",
+    "U4.1",
+    "C22.1",
+    "C23.1",
+    "C25.1"
+   ],
+   "net_class": "analog",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "IMU_REGOUT",
+   "nodes": [
+    "U4.14",
+    "C24.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SPI1_SCK",
+   "nodes": [
+    "U3.21",
+    "U4.2"
+   ],
+   "net_class": "high_speed",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SPI1_MOSI",
+   "nodes": [
+    "U3.23",
+    "U4.3"
+   ],
+   "net_class": "high_speed",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SPI1_MISO",
+   "nodes": [
+    "U3.22",
+    "U4.4"
+   ],
+   "net_class": "high_speed",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "IMU_CS",
+   "nodes": [
+    "U3.20",
+    "U4.5"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "IMU_INT",
+   "nodes": [
+    "U3.24",
+    "U4.6"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "I2C1_SCL",
+   "nodes": [
+    "U3.61",
+    "U5.4",
+    "R8.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "I2C1_SDA",
+   "nodes": [
+    "U3.62",
+    "U5.3",
+    "R9.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SPI3_SCK",
+   "nodes": [
+    "U3.51",
+    "U6.6"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SPI3_MISO",
+   "nodes": [
+    "U3.52",
+    "U6.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "SPI3_MOSI",
+   "nodes": [
+    "U3.53",
+    "U6.5"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "FLASH_CS",
+   "nodes": [
+    "U3.55",
+    "U6.1",
+    "R10.2"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "VBUS",
+   "nodes": [
+    "J2.A4",
+    "J2.A9",
+    "J2.B4",
+    "J2.B9",
+    "U7.5",
+    "D5.2"
+   ],
+   "net_class": "power",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "USB_CC1",
+   "nodes": [
+    "J2.A5",
+    "R11.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "USB_CC2",
+   "nodes": [
+    "J2.B5",
+    "R12.1"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "USB_CONN_DP",
+   "nodes": [
+    "J2.A6",
+    "J2.B6",
+    "U7.1"
+   ],
+   "net_class": "diff_pair",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": "USB_CONN_DM",
+   "impedance_ohm": 90,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "USB_CONN_DM",
+   "nodes": [
+    "J2.A7",
+    "J2.B7",
+    "U7.3"
+   ],
+   "net_class": "diff_pair",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": "USB_CONN_DP",
+   "impedance_ohm": 90,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "USB_DP",
+   "nodes": [
+    "U7.6",
+    "U3.45"
+   ],
+   "net_class": "diff_pair",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": "USB_DM",
+   "impedance_ohm": 90,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "USB_DM",
+   "nodes": [
+    "U7.4",
+    "U3.44"
+   ],
+   "net_class": "diff_pair",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": "USB_DP",
+   "impedance_ohm": 90,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "ESC_CURR",
+   "nodes": [
+    "J3.3",
+    "U3.9"
+   ],
+   "net_class": "analog",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "ESC_TLM",
+   "nodes": [
+    "J3.4",
+    "U3.38"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "MOTOR1",
+   "nodes": [
+    "J3.5",
+    "U3.26"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "MOTOR2",
+   "nodes": [
+    "J3.6",
+    "U3.27"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "MOTOR3",
+   "nodes": [
+    "J3.7",
+    "U3.17"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "MOTOR4",
+   "nodes": [
+    "J3.8",
+    "U3.16"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "UART1_TX",
+   "nodes": [
+    "U3.42",
+    "J4.3"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "UART1_RX",
+   "nodes": [
+    "U3.43",
+    "J4.4"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "UART3_TX",
+   "nodes": [
+    "U3.29",
+    "J5.3"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  },
+  {
+   "name": "UART3_RX",
+   "nodes": [
+    "U3.30",
+    "J5.4"
+   ],
+   "net_class": "",
+   "notes": "",
+   "width_mm": null,
+   "diff_partner": null,
+   "impedance_ohm": null,
+   "max_length_mm": null,
+   "current_a": null,
+   "voltage_v": null
+  }
+ ],
+ "no_connect": [
+  "U1.2",
+  "U1.3",
+  "U1.5",
+  "U2.4",
+  "U4.7",
+  "J2.A8",
+  "J2.B8",
+  "U3.2",
+  "U3.3",
+  "U3.4",
+  "U3.8",
+  "U3.11",
+  "U3.14",
+  "U3.15",
+  "U3.25",
+  "U3.28",
+  "U3.33",
+  "U3.34",
+  "U3.35",
+  "U3.36",
+  "U3.37",
+  "U3.39",
+  "U3.40",
+  "U3.41",
+  "U3.50",
+  "U3.54",
+  "U3.56",
+  "U3.58",
+  "U3.59"
+ ],
+ "requirements": {
+  "input": "2S-6S LiPo (7.0-25.2 V), 6S transients to 30 V",
+  "rails": "5 V 2 A (receiver, VTX, camera), 3.3 V 600 mA",
+  "form_factor": "36x36 mm, 30.5x30.5 mm M3 mounting",
+  "sensors": "6-axis IMU on SPI, barometer on I2C",
+  "logging": "128 Mbit SPI flash (blackbox)",
+  "outputs": "4 DShot motor outputs, ESC current + telemetry",
+  "io": "USB-C (config), UART1 receiver, UART3 VTX, SWD",
+  "fab": "JLCPCB 4-layer 1.6 mm"
+ },
+ "decisions": [
+  "STM32F405RGT6: the reference MCU of Betaflight/INAV (168 MHz FPU, 3 SPI, 6 UART, USB FS); huge ecosystem",
+  "Power: TPS5430 buck (5.5-36 V in, 3 A, 500 kHz) for 5 V, then AP2112K-3.3 LDO: low-noise 3.3 V for MCU + IMU",
+  "IMU on its own ferrite-filtered 3.3 V branch and SPI1 at up to 10 MHz; baro on I2C1 (PB8/PB9) away from the buck",
+  "4-layer stack (SIG / GND / PWR / SIG): solid ground under the MCU/IMU and short return paths for the 500 kHz buck"
+ ],
+ "version": 1,
+ "updated": 1790201035.4444041
+}

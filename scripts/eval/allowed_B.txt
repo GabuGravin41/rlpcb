@@ -1,0 +1,1 @@
+search_symbols get_symbol footprints_for_symbol search_footprints plan_set_info plan_add_components plan_connect plan_disconnect plan_no_connect plan_remove_component plan_show plan_review calculate search_knowledge read_guide reference_designs list_blocks add_block next_step design_checks block_connect

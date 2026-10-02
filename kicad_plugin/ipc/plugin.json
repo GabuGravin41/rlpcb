@@ -1,0 +1,21 @@
+{
+  "$schema": "https://go.kicad.org/api/schemas/v1",
+  "identifier": "org.rlpcb.copilot",
+  "name": "RL PCB Copilot",
+  "description": "AI design copilot: parts search, design plans, placement, wiring guidance and verification.",
+  "runtime": {
+    "type": "python"
+  },
+  "actions": [
+    {
+      "identifier": "open-panel",
+      "name": "RL PCB Copilot",
+      "description": "Open the RL PCB chat panel for this project",
+      "show-button": true,
+      "scopes": ["pcb", "schematic", "project_manager"],
+      "entrypoint": "launch.py",
+      "icons-light": ["icon-light-24.png", "icon-light-48.png"],
+      "icons-dark": ["icon-dark-24.png", "icon-dark-48.png"]
+    }
+  ]
+}

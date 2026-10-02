@@ -1,0 +1,140 @@
+{
+ "runA1": {
+  "score": "15/20",
+  "failed": [
+   "vcap",
+   "usb_data",
+   "usb_cc",
+   "usb_esd",
+   "review_clean"
+  ],
+  "tool_calls": 68
+ },
+ "runA2": {
+  "score": "17/20",
+  "failed": [
+   "usb_data",
+   "usb_cc",
+   "review_clean"
+  ],
+  "tool_calls": 70
+ },
+ "runA3": {
+  "score": "16/20",
+  "failed": [
+   "usb_esd",
+   "power_path",
+   "ldo_caps",
+   "review_clean"
+  ],
+  "tool_calls": 92
+ },
+ "runA4": {
+  "score": "18/20",
+  "failed": [
+   "led",
+   "review_clean"
+  ],
+  "tool_calls": 103
+ },
+ "runA5": {
+  "score": "15/20",
+  "failed": [
+   "usb_data",
+   "usb_esd",
+   "power_path",
+   "baro_mode",
+   "review_clean"
+  ],
+  "tool_calls": 102
+ },
+ "runA6": {
+  "score": "10/20",
+  "failed": [
+   "vcap",
+   "hse_crystal",
+   "usb_cc",
+   "usb_esd",
+   "power_path",
+   "i2c_pullups",
+   "baro_mode",
+   "i2c_pins",
+   "flash_misc",
+   "review_clean"
+  ],
+  "tool_calls": 70
+ },
+ "runA7": {
+  "score": "20/20",
+  "failed": [],
+  "tool_calls": 103
+ },
+ "runA8": {
+  "score": "18/20",
+  "failed": [
+   "baro_mode",
+   "review_clean"
+  ],
+  "tool_calls": 99
+ },
+ "runB1": {
+  "score": "16/20",
+  "failed": [
+   "i2c_pins",
+   "flash_spi",
+   "uart_header",
+   "review_clean"
+  ],
+  "tool_calls": 23
+ },
+ "runB2": {
+  "score": "20/20",
+  "failed": [],
+  "tool_calls": 23
+ },
+ "runB3": {
+  "score": "20/20",
+  "failed": [],
+  "tool_calls": 15
+ },
+ "runB4": {
+  "score": "20/20",
+  "failed": [],
+  "tool_calls": 47
+ },
+ "runB5": {
+  "score": "18/20",
+  "failed": [
+   "usb_data",
+   "review_clean"
+  ],
+  "tool_calls": 91
+ },
+ "runB6": {
+  "score": "17/20",
+  "failed": [
+   "usb_data",
+   "flash_spi",
+   "review_clean"
+  ],
+  "tool_calls": 40
+ },
+ "runB7": {
+  "score": "20/20",
+  "failed": [],
+  "tool_calls": 22
+ },
+ "runB8": {
+  "score": "18/20",
+  "failed": [
+   "power_path",
+   "review_clean"
+  ],
+  "tool_calls": 34
+ },
+ "ref": {
+  "score": "20/20",
+  "failed": [],
+  "tool_calls": 8
+ }
+}

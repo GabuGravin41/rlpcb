@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+data/
+*.db
+!seed/corpus.db
+.venv/
+*.egg-info/
+.pytest_cache/
+.history/
+*-backups/
+fp-info-cache
+*.lck
+*.kicad_prl

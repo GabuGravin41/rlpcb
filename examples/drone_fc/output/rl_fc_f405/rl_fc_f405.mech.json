@@ -1,0 +1,1169 @@
+{
+ "schema": "rl-mech/1",
+ "board": "rl_fc_f405",
+ "source": "/home/claude/rlpcb/examples/drone_fc/output/rl_fc_f405/rl_fc_f405.kicad_pcb",
+ "source_mtime": 1790496812.8465264,
+ "generated": 1790497536.5560284,
+ "frame": "origin at outline centre; +x KiCad +x; +y KiCad -y; z=0 bottom face",
+ "outline_mm": {
+  "size": [
+   36.0,
+   36.0
+  ],
+  "min": [
+   -18.0,
+   -18.0
+  ],
+  "max": [
+   18.0,
+   18.0
+  ]
+ },
+ "kicad_centre_mm": [
+  118.0,
+  118.0
+ ],
+ "thickness_mm": 1.6,
+ "copper_layers": 4,
+ "mounting_holes": [
+  {
+   "ref": "H4",
+   "at_mm": [
+    -15.25,
+    -15.25
+   ],
+   "drill_mm": 3.2,
+   "plated": false,
+   "net": ""
+  },
+  {
+   "ref": "H1",
+   "at_mm": [
+    -15.25,
+    15.25
+   ],
+   "drill_mm": 3.2,
+   "plated": false,
+   "net": ""
+  },
+  {
+   "ref": "H2",
+   "at_mm": [
+    15.25,
+    15.25
+   ],
+   "drill_mm": 3.2,
+   "plated": false,
+   "net": ""
+  },
+  {
+   "ref": "H3",
+   "at_mm": [
+    15.25,
+    -15.25
+   ],
+   "drill_mm": 3.2,
+   "plated": false,
+   "net": ""
+  }
+ ],
+ "height_mm": {
+  "top": 3.31,
+  "bottom": 2.5
+ },
+ "connectors": [
+  {
+   "ref": "J6",
+   "value": "SWD",
+   "mate": "header-04",
+   "side": "top",
+   "at_mm": [
+    16.0,
+    -3.0
+   ],
+   "rotation": 0.0,
+   "bbox_mm": [
+    14.45,
+    -7.95,
+    17.55,
+    -1.85
+   ],
+   "edge": "+x",
+   "overhang_mm": 0.0,
+   "height_mm": 0.0,
+   "populated": false,
+   "plug_mm": null,
+   "nets": [
+    "+3V3",
+    "GND",
+    "SWCLK",
+    "SWDIO"
+   ]
+  },
+  {
+   "ref": "J1",
+   "value": "BATT",
+   "mate": "wire-pads",
+   "side": "top",
+   "at_mm": [
+    -9.5,
+    -15.0
+   ],
+   "rotation": 0.0,
+   "bbox_mm": [
+    -11.75,
+    -17.05,
+    -1.25,
+    -12.95
+   ],
+   "edge": "-y",
+   "overhang_mm": 0.0,
+   "height_mm": 0.0,
+   "populated": false,
+   "plug_mm": null,
+   "nets": [
+    "GND",
+    "VBAT"
+   ]
+  },
+  {
+   "ref": "J5",
+   "value": "VTX",
+   "mate": "jst-sh-04",
+   "side": "top",
+   "at_mm": [
+    14.5,
+    6.5
+   ],
+   "rotation": 90.0,
+   "bbox_mm": [
+    11.22,
+    2.6,
+    17.78,
+    10.4
+   ],
+   "edge": "+x",
+   "overhang_mm": 0.0,
+   "height_mm": 2.95,
+   "populated": true,
+   "plug_mm": null,
+   "nets": [
+    "+5V",
+    "GND",
+    "UART3_RX",
+    "UART3_TX"
+   ]
+  },
+  {
+   "ref": "J3",
+   "value": "ESC",
+   "mate": "jst-sh-08",
+   "side": "top",
+   "at_mm": [
+    5.5,
+    -14.5
+   ],
+   "rotation": 0.0,
+   "bbox_mm": [
+    -0.4,
+    -17.78,
+    11.4,
+    -11.22
+   ],
+   "edge": "-y",
+   "overhang_mm": 0.0,
+   "height_mm": 2.95,
+   "populated": true,
+   "plug_mm": null,
+   "nets": [
+    "ESC_CURR",
+    "ESC_TLM",
+    "GND",
+    "MOTOR1",
+    "MOTOR2",
+    "MOTOR3",
+    "MOTOR4",
+    "VBAT"
+   ]
+  },
+  {
+   "ref": "J2",
+   "value": "USB-C",
+   "mate": "usb-c",
+   "side": "top",
+   "at_mm": [
+    1.5,
+    15.5
+   ],
+   "rotation": 180.0,
+   "bbox_mm": [
+    -3.82,
+    10.74,
+    6.82,
+    19.68
+   ],
+   "edge": "+y",
+   "overhang_mm": 1.68,
+   "height_mm": 3.31,
+   "populated": true,
+   "plug_mm": [
+    12.5,
+    7.0
+   ],
+   "nets": [
+    "/Connectors/USB_CC1",
+    "/Connectors/USB_CC2",
+    "/Connectors/USB_CONN_DM",
+    "/Connectors/USB_CONN_DP",
+    "/Connectors/VBUS",
+    "GND",
+    "unconnected-(J2-SBU1-PadA8)",
+    "unconnected-(J2-SBU2-PadB8)"
+   ]
+  },
+  {
+   "ref": "J4",
+   "value": "RX",
+   "mate": "jst-sh-04",
+   "side": "top",
+   "at_mm": [
+    -14.5,
+    7.5
+   ],
+   "rotation": -90.0,
+   "bbox_mm": [
+    -17.78,
+    3.6,
+    -11.22,
+    11.4
+   ],
+   "edge": "-x",
+   "overhang_mm": 0.0,
+   "height_mm": 2.95,
+   "populated": true,
+   "plug_mm": null,
+   "nets": [
+    "+5V",
+    "GND",
+    "UART1_RX",
+    "UART1_TX"
+   ]
+  }
+ ],
+ "components": [
+  {
+   "ref": "R11",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    3.33,
+    8.62,
+    4.27,
+    10.48
+   ]
+  },
+  {
+   "ref": "C11",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    8.54,
+    8.39,
+    10.36,
+    9.31
+   ]
+  },
+  {
+   "ref": "C20",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -6.71,
+    6.94,
+    -4.89,
+    7.86
+   ]
+  },
+  {
+   "ref": "R3",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -12.57,
+    -11.38,
+    -11.63,
+    -9.52
+   ]
+  },
+  {
+   "ref": "Y1",
+   "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "side": "top",
+   "height_mm": 0.8,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -9.6,
+    3.3,
+    -5.4,
+    6.7
+   ]
+  },
+  {
+   "ref": "C15",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    5.14,
+    -7.26,
+    6.06,
+    -5.44
+   ]
+  },
+  {
+   "ref": "J6",
+   "footprint": "PinHeader_1x04_P1.27mm_Vertical",
+   "side": "top",
+   "height_mm": 0.0,
+   "height_source": "not populated",
+   "populated": false,
+   "bbox_mm": [
+    14.45,
+    -7.95,
+    17.55,
+    -1.85
+   ]
+  },
+  {
+   "ref": "J1",
+   "footprint": "SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm",
+   "side": "top",
+   "height_mm": 0.0,
+   "height_source": "not populated",
+   "populated": false,
+   "bbox_mm": [
+    -11.75,
+    -17.05,
+    -1.25,
+    -12.95
+   ]
+  },
+  {
+   "ref": "H4",
+   "footprint": "MountingHole_3.2mm_M3",
+   "side": "top",
+   "height_mm": 0.0,
+   "height_source": "not populated",
+   "populated": false,
+   "bbox_mm": [
+    -18.7,
+    -18.7,
+    -11.8,
+    -11.8
+   ]
+  },
+  {
+   "ref": "FB1",
+   "footprint": "L_0603_1608Metric",
+   "side": "top",
+   "height_mm": 0.9,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    8.72,
+    -8.33,
+    10.18,
+    -5.37
+   ]
+  },
+  {
+   "ref": "C14",
+   "footprint": "C_0603_1608Metric",
+   "side": "top",
+   "height_mm": 0.9,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -5.53,
+    9.27,
+    -4.07,
+    12.23
+   ]
+  },
+  {
+   "ref": "R9",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    8.68,
+    15.47,
+    9.62,
+    17.33
+   ]
+  },
+  {
+   "ref": "C1",
+   "footprint": "C_1206_3216Metric",
+   "side": "top",
+   "height_mm": 1.6,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -16.8,
+    -1.4,
+    -14.5,
+    3.2
+   ]
+  },
+  {
+   "ref": "R1",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -13.77,
+    -7.53,
+    -12.83,
+    -5.67
+   ]
+  },
+  {
+   "ref": "H1",
+   "footprint": "MountingHole_3.2mm_M3",
+   "side": "top",
+   "height_mm": 0.0,
+   "height_source": "not populated",
+   "populated": false,
+   "bbox_mm": [
+    -18.7,
+    11.8,
+    -11.8,
+    18.7
+   ]
+  },
+  {
+   "ref": "R12",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -1.37,
+    8.52,
+    -0.43,
+    10.38
+   ]
+  },
+  {
+   "ref": "H2",
+   "footprint": "MountingHole_3.2mm_M3",
+   "side": "top",
+   "height_mm": 0.0,
+   "height_source": "not populated",
+   "populated": false,
+   "bbox_mm": [
+    11.8,
+    11.8,
+    18.7,
+    18.7
+   ]
+  },
+  {
+   "ref": "C3",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -15.46,
+    -6.16,
+    -14.54,
+    -4.34
+   ]
+  },
+  {
+   "ref": "J5",
+   "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "side": "top",
+   "height_mm": 2.95,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    11.22,
+    2.6,
+    17.78,
+    10.4
+   ]
+  },
+  {
+   "ref": "C6",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -11.01,
+    11.14,
+    -9.19,
+    12.06
+   ]
+  },
+  {
+   "ref": "C16",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    9.54,
+    1.44,
+    11.36,
+    2.36
+   ]
+  },
+  {
+   "ref": "H3",
+   "footprint": "MountingHole_3.2mm_M3",
+   "side": "top",
+   "height_mm": 0.0,
+   "height_source": "not populated",
+   "populated": false,
+   "bbox_mm": [
+    11.8,
+    -18.7,
+    18.7,
+    -11.8
+   ]
+  },
+  {
+   "ref": "R6",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    2.08,
+    8.42,
+    3.02,
+    10.28
+   ]
+  },
+  {
+   "ref": "C12",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -1.36,
+    -7.21,
+    -0.44,
+    -5.39
+   ]
+  },
+  {
+   "ref": "R7",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    7.53,
+    -7.28,
+    8.47,
+    -5.42
+   ]
+  },
+  {
+   "ref": "D3",
+   "footprint": "LED_0603_1608Metric",
+   "side": "top",
+   "height_mm": 0.8,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    4.57,
+    8.62,
+    7.53,
+    10.08
+   ]
+  },
+  {
+   "ref": "R2",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -12.57,
+    -7.33,
+    -11.63,
+    -5.47
+   ]
+  },
+  {
+   "ref": "C10",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    6.44,
+    -7.31,
+    7.36,
+    -5.49
+   ]
+  },
+  {
+   "ref": "U2",
+   "footprint": "SOT-23-5",
+   "side": "top",
+   "height_mm": 1.45,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -10.05,
+    12.3,
+    -5.95,
+    15.7
+   ]
+  },
+  {
+   "ref": "J3",
+   "footprint": "JST_SH_SM08B-SRSS-TB_1x08-1MP_P1.00mm_Horizontal",
+   "side": "top",
+   "height_mm": 2.95,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -0.4,
+    -17.78,
+    11.4,
+    -11.22
+   ]
+  },
+  {
+   "ref": "J2",
+   "footprint": "USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal",
+   "side": "top",
+   "height_mm": 3.31,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -3.82,
+    10.74,
+    6.82,
+    19.68
+   ]
+  },
+  {
+   "ref": "U3",
+   "footprint": "LQFP-64_10x10mm_P0.5mm",
+   "side": "top",
+   "height_mm": 1.6,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -4.2,
+    -5.2,
+    9.2,
+    8.2
+   ]
+  },
+  {
+   "ref": "U5",
+   "footprint": "Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering",
+   "side": "top",
+   "height_mm": 0.95,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    7.95,
+    12.7,
+    11.05,
+    15.3
+   ]
+  },
+  {
+   "ref": "J4",
+   "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "side": "top",
+   "height_mm": 2.95,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -17.78,
+    3.6,
+    -11.22,
+    11.4
+   ]
+  },
+  {
+   "ref": "C5",
+   "footprint": "C_0805_2012Metric",
+   "side": "top",
+   "height_mm": 1.25,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -11.0,
+    9.02,
+    -7.6,
+    10.98
+   ]
+  },
+  {
+   "ref": "C7",
+   "footprint": "C_0603_1608Metric",
+   "side": "top",
+   "height_mm": 0.9,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -7.08,
+    15.92,
+    -4.12,
+    17.38
+   ]
+  },
+  {
+   "ref": "D1",
+   "footprint": "D_SMA",
+   "side": "top",
+   "height_mm": 2.3,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -7.75,
+    -5.0,
+    -4.25,
+    2.0
+   ]
+  },
+  {
+   "ref": "U1",
+   "footprint": "TI_SO-PowerPAD-8_ThermalVias",
+   "side": "top",
+   "height_mm": 1.2,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -14.25,
+    -5.25,
+    -8.75,
+    2.25
+   ]
+  },
+  {
+   "ref": "L1",
+   "footprint": "L_Bourns_SRP7028A_7.3x6.6mm",
+   "side": "top",
+   "height_mm": 2.8,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -11.45,
+    -12.55,
+    -2.55,
+    -5.45
+   ]
+  },
+  {
+   "ref": "R8",
+   "footprint": "R_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    9.77,
+    15.48,
+    11.63,
+    16.42
+   ]
+  },
+  {
+   "ref": "D4",
+   "footprint": "LED_0603_1608Metric",
+   "side": "top",
+   "height_mm": 0.8,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    5.42,
+    -9.03,
+    8.38,
+    -7.57
+   ]
+  },
+  {
+   "ref": "C13",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -6.31,
+    8.19,
+    -4.49,
+    9.11
+   ]
+  },
+  {
+   "ref": "C19",
+   "footprint": "C_0402_1005Metric",
+   "side": "top",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -6.61,
+    2.19,
+    -4.79,
+    3.11
+   ]
+  },
+  {
+   "ref": "C23",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -3.51,
+    -2.86,
+    -1.69,
+    -1.94
+   ]
+  },
+  {
+   "ref": "C21",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -4.11,
+    1.79,
+    -2.29,
+    2.71
+   ]
+  },
+  {
+   "ref": "C26",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    13.84,
+    -11.11,
+    15.66,
+    -10.19
+   ]
+  },
+  {
+   "ref": "SW1",
+   "footprint": "SW_SPST_TL3342",
+   "side": "bottom",
+   "height_mm": 2.5,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    4.75,
+    2.0,
+    13.25,
+    8.0
+   ]
+  },
+  {
+   "ref": "R5",
+   "footprint": "R_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    12.72,
+    0.88,
+    14.58,
+    1.82
+   ]
+  },
+  {
+   "ref": "D2",
+   "footprint": "D_SMA",
+   "side": "bottom",
+   "height_mm": 2.3,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -11.25,
+    -12.0,
+    -7.75,
+    -5.0
+   ]
+  },
+  {
+   "ref": "C27",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    2.29,
+    -7.26,
+    4.11,
+    -6.34
+   ]
+  },
+  {
+   "ref": "R10",
+   "footprint": "R_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    3.12,
+    -11.57,
+    4.98,
+    -10.63
+   ]
+  },
+  {
+   "ref": "R4",
+   "footprint": "R_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.4,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -6.13,
+    0.28,
+    -4.27,
+    1.22
+   ]
+  },
+  {
+   "ref": "C4",
+   "footprint": "C_0805_2012Metric",
+   "side": "bottom",
+   "height_mm": 1.25,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -10.85,
+    13.97,
+    -7.45,
+    15.93
+   ]
+  },
+  {
+   "ref": "C24",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    0.59,
+    -3.76,
+    1.51,
+    -1.94
+   ]
+  },
+  {
+   "ref": "C17",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -5.61,
+    -2.46,
+    -3.79,
+    -1.54
+   ]
+  },
+  {
+   "ref": "FB2",
+   "footprint": "L_0603_1608Metric",
+   "side": "bottom",
+   "height_mm": 0.9,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    0.82,
+    -6.18,
+    3.78,
+    -4.72
+   ]
+  },
+  {
+   "ref": "C22",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -1.51,
+    -3.76,
+    -0.59,
+    -1.94
+   ]
+  },
+  {
+   "ref": "C8",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -4.11,
+    0.29,
+    -2.29,
+    1.21
+   ]
+  },
+  {
+   "ref": "U7",
+   "footprint": "SOT-23-6",
+   "side": "bottom",
+   "height_mm": 1.45,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -0.55,
+    11.8,
+    3.55,
+    15.2
+   ]
+  },
+  {
+   "ref": "D5",
+   "footprint": "D_SMA",
+   "side": "bottom",
+   "height_mm": 2.3,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    7.75,
+    9.5,
+    11.25,
+    16.5
+   ]
+  },
+  {
+   "ref": "C2",
+   "footprint": "C_1206_3216Metric",
+   "side": "bottom",
+   "height_mm": 1.6,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -13.3,
+    0.15,
+    -11.0,
+    4.75
+   ]
+  },
+  {
+   "ref": "C18",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -4.11,
+    -1.21,
+    -2.29,
+    -0.29
+   ]
+  },
+  {
+   "ref": "U6",
+   "footprint": "SOIC-8_5.23x5.23mm_P1.27mm",
+   "side": "bottom",
+   "height_mm": 2.16,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    4.35,
+    -10.36,
+    13.65,
+    -4.64
+   ]
+  },
+  {
+   "ref": "U4",
+   "footprint": "LGA-16_3x3mm_P0.5mm_LayoutBorder3x5y",
+   "side": "bottom",
+   "height_mm": 0.75,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -1.75,
+    -1.75,
+    1.75,
+    1.75
+   ]
+  },
+  {
+   "ref": "C25",
+   "footprint": "C_0402_1005Metric",
+   "side": "bottom",
+   "height_mm": 0.55,
+   "height_source": "table",
+   "populated": true,
+   "bbox_mm": [
+    -2.61,
+    -4.91,
+    -1.69,
+    -3.09
+   ]
+  }
+ ],
+ "mass_g_est": 7.3,
+ "notes": [
+  "component heights come from a footprint-class table (height_source='table') or a 1.5 mm default ('est'); a KiCad STEP with 3D models replaces them"
+ ]
+}

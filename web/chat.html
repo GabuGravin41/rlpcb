@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RL PCB Copilot</title>
+<style>
+:root{
+  --bg:#f6f5f1; --panel:#ffffff; --ink:#1d1f21; --muted:#6b6f76; --line:#e2e0da; --accent:#0f7b6c; --accent-ink:#fff;
+  --user:#e8f3f1; --tool:#f1efe9; --err:#b3261e; --code:#f3f2ee; --shadow:0 1px 2px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#15171a; --panel:#1c1f23; --ink:#e7e5df; --muted:#9aa0a6; --line:#2d3136; --accent:#3ec1ab; --accent-ink:#0b1412;
+    --user:#18302c; --tool:#23272c; --err:#ff8a80; --code:#23272c; }
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+header .brand{font-weight:700;letter-spacing:.2px}
+header .brand span{color:var(--accent)}
+header .proj{flex:1;min-width:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+button{font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+.chips button{font-size:12px;padding:3px 9px;border-radius:999px}
+#log{flex:1;overflow-y:auto;padding:14px 12px 20px}
+.msg{max-width:100%;margin:0 0 12px}
+.msg.user{background:var(--user);padding:8px 12px;border-radius:12px;margin-left:12%}
+.msg.assistant{padding:2px 2px}
+.msg.error{color:var(--err)}
+.tool{font:12px/1.4 ui-monospace,Consolas,monospace;color:var(--muted);background:var(--tool);border-radius:8px;padding:5px 9px;margin:0 0 8px;cursor:pointer;white-space:pre-wrap;word-break:break-word}
+.tool .n{color:var(--accent);font-weight:600}
+.tool .d{display:none;margin-top:4px}
+.tool.open .d{display:block}
+.status{color:var(--muted);font-size:12px;padding:0 12px 6px;min-height:18px}
+.msg img{max-width:100%;border:1px solid var(--line);border-radius:8px;margin-top:6px;background:#fff}
+.msg pre{background:var(--code);padding:8px 10px;border-radius:8px;overflow-x:auto}
+.msg code{background:var(--code);padding:1px 4px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+.msg pre code{padding:0;background:none}
+.msg table{border-collapse:collapse;margin:6px 0;font-size:13px}
+.msg td,.msg th{border:1px solid var(--line);padding:3px 7px;text-align:left}
+.msg h1,.msg h2,.msg h3{font-size:15px;margin:12px 0 4px}
+.msg ul,.msg ol{padding-left:22px;margin:4px 0}
+.msg p{margin:4px 0}
+footer{border-top:1px solid var(--line);background:var(--panel);padding:10px 12px;display:flex;gap:8px;align-items:flex-end}
+textarea{flex:1;resize:none;min-height:42px;max-height:180px;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+textarea:focus{outline:none;border-color:var(--accent)}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);width:min(560px,94vw);padding:16px}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+label{display:block;font-size:12px;color:var(--muted);margin:10px 0 3px}
+input,select{width:100%;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.hint{font-size:12px;color:var(--muted)}
+.empty{color:var(--muted);text-align:center;margin-top:12vh;padding:0 10px}
+.empty b{color:var(--ink)}
+#hist a{display:block;padding:6px 4px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">RL<span>PCB</span></div>
+  <div class="proj" id="proj" title="Click to open a project">no project</div>
+  <select id="mode" style="width:auto;flex:none;padding:4px 6px" title="How much the AI may do (for the whole design; ask in the chat to set it per block or for routing)">
+    <option value="teach">Teach</option><option value="advise">Advise</option><option value="propose">Propose</option><option value="do">Do</option>
+  </select>
+  <button id="btnProps" style="flex:none;white-space:nowrap" title="Proposals waiting for you">Proposals <span id="nprops"></span></button>
+  <button id="btnHist" title="Previous chats">⟲</button>
+  <button id="btnNew" title="New chat">＋</button>
+  <button id="btnSet" title="Settings">⚙</button>
+</header>
+<div class="chips">
+  <button data-q="I want to start a new design. Ask me what I want to build, then use kickoff to propose an architecture, the questions to answer and the pitfalls.">✦ New design</button>
+  <button data-q="Review the board layout like a senior layout engineer: placement, routing, EMC and power, with reasons.">⌗ Review layout</button>
+  <button data-q="What has been verified in this design and what has not? Use assurance_report.">✓? What's verified</button>
+  <button data-q="Verify my schematic against the plan and tell me what is missing or wrong.">✔ Verify wiring</button>
+  <button data-q="Check the schematic for ghost wires, near-misses and other drawing problems.">👻 Ghost wires</button>
+  <button data-q="Give me the wiring guide for what is left to wire, one block at a time.">🧭 Wiring guide</button>
+  <button data-q="Show me the schematic.">🖼 Show schematic</button>
+  <button data-q="Give me the board status: size, layers, placement problems and routing progress.">▦ Board status</button>
+  <button data-q="Run DRC and explain the violations and how to fix them.">⚠ DRC</button>
+</div>
+<div id="log"><div class="empty" id="empty">
+  <p><b>Describe what you want to build.</b></p>
+  <p>I'll help you choose parts from your KiCad libraries, work out values, place the symbols, tell you exactly what to wire — and check your wiring.</p>
+  <p class="hint">Examples: “a 24 V PLC digital input card with 8 isolated inputs”, “an ESP32-S3 board with USB-C and a 3 A buck”, “review my existing project”.</p>
+</div></div>
+<div class="status" id="status"></div>
+<footer>
+  <textarea id="inp" placeholder="Ask RL PCB…  (Enter to send, Shift+Enter for a new line)"></textarea>
+  <button class="primary" id="send">Send</button>
+</footer>
+
+<dialog id="dlgSet">
+  <h3 style="margin:0 0 4px">Settings</h3>
+  <div class="hint">With only a Claude Pro/Max plan, use Claude Desktop + the RL PCB MCP server (see README). This panel needs an API key or a local model.</div>
+  <label>Provider</label>
+  <select id="provider"><option value="anthropic">Anthropic (Claude API)</option><option value="openai">OpenAI-compatible (Ollama, LM Studio, OpenRouter…)</option></select>
+  <label>Anthropic API key</label><input id="anthropic_api_key" type="password" placeholder="sk-ant-…">
+  <label>Model (“auto” = newest Sonnet on your key)</label><input id="model" placeholder="auto">
+  <label>OpenAI-compatible base URL</label><input id="openai_base_url" placeholder="http://localhost:11434/v1">
+  <label>OpenAI-compatible model</label><input id="openai_model" placeholder="qwen2.5:14b">
+  <label>OpenAI-compatible API key</label><input id="openai_api_key" type="password">
+  <label>GitHub token (optional, for corpus search)</label><input id="github_token" type="password">
+  <label><input type="checkbox" id="web_search" style="width:auto"> Allow web search (Claude)</label>
+  <label><input type="checkbox" id="allow_file_writes" style="width:auto"> Allow RL PCB to write project files (backups are always made)</label>
+  <div class="row"><button id="cancelSet">Cancel</button><button class="primary" id="saveSet">Save</button></div>
+</dialog>
+
+<dialog id="dlgProj">
+  <h3 style="margin:0 0 8px">Open project</h3>
+  <label>Path to .kicad_pro or project folder</label><input id="projPath" placeholder="C:\Users\you\Documents\KiCad\myboard">
+  <div class="row"><button id="cancelProj">Cancel</button><button class="primary" id="okProj">Open</button></div>
+</dialog>
+
+<dialog id="dlgProps" style="max-width:640px;width:92vw"><h3 style="margin:0 0 8px">Proposals</h3>
+  <div class="hint">Changes the AI prepared on a copy of your design. Nothing is applied until you accept it.</div>
+  <div id="props"></div>
+  <div class="row"><button id="btnUndo" title="Undo the most recent applied change">Undo last change</button><button id="closeProps">Close</button></div></dialog>
+<dialog id="dlgHist"><h3 style="margin:0 0 8px">Previous chats</h3><div id="hist"></div><div class="row"><button id="closeHist">Close</button></div></dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+let convId = null, busy = false, current = null;
+
+function esc(s){return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function md(src){
+  // small, safe markdown renderer: code blocks, inline code, bold/italic, headings, lists, tables, links
+  const blocks = []; src = src.replace(/```(\w*)\n([\s\S]*?)```/g, (_, l, c) => { blocks.push(`<pre><code>${esc(c)}</code></pre>`); return `\u0000${blocks.length-1}\u0000`; });
+  let out = [], lines = esc(src).split('\n'), i = 0;
+  const inline = t => t.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|\W)\*([^*\n]+)\*(?=\W|$)/g,'$1<i>$2</i>')
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  while (i < lines.length){
+    let l = lines[i];
+    if (/^\|.*\|\s*$/.test(l) && i+1 < lines.length && /^\|[\s:\-|]+\|\s*$/.test(lines[i+1])){
+      const row = r => r.trim().replace(/^\||\|$/g,'').split('|').map(c => inline(c.trim()));
+      let h = row(l), t = `<table><tr>${h.map(c=>`<th>${c}</th>`).join('')}</tr>`; i += 2;
+      while (i < lines.length && /^\|.*\|\s*$/.test(lines[i])) { t += `<tr>${row(lines[i]).map(c=>`<td>${c}</td>`).join('')}</tr>`; i++; }
+      out.push(t + '</table>'); continue;
+    }
+    if (/^\s*([-*]|\d+\.)\s+/.test(l)){
+      const ordered = /^\s*\d+\./.test(l); let items = [];
+      while (i < lines.length && /^\s*([-*]|\d+\.)\s+/.test(lines[i])) { items.push(inline(lines[i].replace(/^\s*([-*]|\d+\.)\s+/,''))); i++; }
+      out.push(`<${ordered?'ol':'ul'}>${items.map(x=>`<li>${x}</li>`).join('')}</${ordered?'ol':'ul'}>`); continue;
+    }
+    const h = l.match(/^(#{1,4})\s+(.*)/); if (h){ out.push(`<h3>${inline(h[2])}</h3>`); i++; continue; }
+    if (l.trim()==='') { i++; continue; }
+    out.push(`<p>${inline(l)}</p>`); i++;
+  }
+  return out.join('').replace(/\u0000(\d+)\u0000/g, (_, n) => blocks[+n]);
+}
+
+function add(cls, html){ $('#empty')?.remove(); const d = document.createElement('div'); d.className = 'msg ' + cls; d.innerHTML = html; $('#log').appendChild(d); $('#log').scrollTop = 1e9; return d; }
+function addTool(name, input){
+  $('#empty')?.remove();
+  const d = document.createElement('div'); d.className = 'tool';
+  d.innerHTML = `<span class="n">⚙ ${esc(name)}</span> <span class="s"></span><div class="d">${esc(JSON.stringify(input, null, 1)).slice(0, 3000)}</div>`;
+  d.onclick = () => d.classList.toggle('open'); $('#log').appendChild(d); $('#log').scrollTop = 1e9; return d;
+}
+
+async function send(text){
+  if (busy || !text.trim()) return; busy = true; $('#send').disabled = true;
+  add('user', esc(text).replace(/\n/g,'<br>')); $('#inp').value = '';
+  current = null; let lastTool = null, acc = '';
+  try{
+    const r = await fetch('/api/chat', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({conv_id: convId, text})});
+    const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = '';
+    while (true){
+      const {value, done} = await reader.read(); if (done) break;
+      buf += dec.decode(value, {stream:true});
+      let k; while ((k = buf.indexOf('\n\n')) >= 0){
+        const line = buf.slice(0, k).replace(/^data: /,''); buf = buf.slice(k+2);
+        let ev; try { ev = JSON.parse(line); } catch(e){ continue; }
+        convId = ev.conv_id || convId;
+        if (ev.type === 'status') $('#status').textContent = ev.text;
+        else if (ev.type === 'text'){ acc = ev.text; current = add('assistant', md(acc)); }
+        else if (ev.type === 'tool'){ lastTool = addTool(ev.name, ev.input); $('#status').textContent = 'running ' + ev.name + '…'; }
+        else if (ev.type === 'tool_result'){
+          if (lastTool) lastTool.querySelector('.s').textContent = '→ ' + ev.summary;
+          for (const p of (ev.images||[])) add('assistant', `<img src="/api/image?path=${encodeURIComponent(p)}" alt="render">`);
+        }
+        else if (ev.type === 'error') add('error', esc(ev.text));
+        else if (ev.type === 'done') $('#status').textContent = '';
+      }
+    }
+  } catch(e){ add('error', esc(String(e))); }
+  busy = false; $('#send').disabled = false; $('#status').textContent = ''; refresh(); refreshCopilot();
+}
+
+async function refresh(){
+  const s = await (await fetch('/api/status')).json();
+  $('#proj').textContent = s.project ? s.project : 'no project — click to open';
+  refreshCopilot();
+  if (!s.has_key && s.provider !== 'openai' && !$('#keywarn')){
+    add('assistant', '<div id="keywarn" class="hint">No API key set. Open ⚙ Settings to add an Anthropic key or a local model — or use Claude Desktop with the RL PCB MCP server (works with a Pro plan).</div>');
+  }
+}
+
+$('#send').onclick = () => send($('#inp').value);
+$('#inp').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); send($('#inp').value); } });
+$('#inp').addEventListener('input', e => { e.target.style.height = 'auto'; e.target.style.height = Math.min(180, e.target.scrollHeight) + 'px'; });
+document.querySelectorAll('.chips button').forEach(b => b.onclick = () => send(b.dataset.q));
+$('#btnNew').onclick = () => { convId = null; $('#log').innerHTML = ''; add('assistant', '<span class="hint">New chat.</span>'); };
+$('#btnSet').onclick = async () => {
+  const s = await (await fetch('/api/settings')).json();
+  for (const k of ['provider','anthropic_api_key','model','openai_base_url','openai_model','openai_api_key','github_token']) $('#'+k).value = s[k] ?? '';
+  $('#web_search').checked = s.web_search !== false; $('#allow_file_writes').checked = s.allow_file_writes !== false;
+  $('#dlgSet').showModal();
+};
+$('#cancelSet').onclick = () => $('#dlgSet').close();
+$('#saveSet').onclick = async () => {
+  const body = {}; for (const k of ['provider','anthropic_api_key','model','openai_base_url','openai_model','openai_api_key','github_token']) body[k] = $('#'+k).value.trim();
+  body.web_search = $('#web_search').checked; body.allow_file_writes = $('#allow_file_writes').checked;
+  await fetch('/api/settings', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(body)});
+  $('#dlgSet').close(); $('#keywarn')?.remove(); refresh();
+};
+$('#proj').onclick = () => $('#dlgProj').showModal();
+$('#cancelProj').onclick = () => $('#dlgProj').close();
+$('#okProj').onclick = async () => {
+  const r = await (await fetch('/api/open', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({path: $('#projPath').value.trim()})})).json();
+  $('#dlgProj').close(); if (r.error) add('error', esc(r.error)); refresh();
+};
+$('#btnHist').onclick = async () => {
+  const list = await (await fetch('/api/conversations')).json();
+  $('#hist').innerHTML = list.map(c => `<a href="#" data-id="${esc(c.id)}">${esc(c.title || c.id)}<br><span class="hint">${esc(c.project||'')}</span></a>`).join('') || '<div class="hint">No saved chats yet.</div>';
+  $('#hist').querySelectorAll('a').forEach(a => a.onclick = async ev => {
+    ev.preventDefault(); const d = await (await fetch('/api/conversation?id=' + a.dataset.id)).json();
+    convId = d.id; $('#log').innerHTML = '';
+    for (const m of d.messages) m.role === 'tool' ? addTool(m.text, {}) : add(m.role, m.role === 'user' ? esc(m.text) : md(m.text));
+    $('#dlgHist').close();
+  });
+  $('#dlgHist').showModal();
+};
+$('#closeHist').onclick = () => $('#dlgHist').close();
+async function eng(name, args){ return await (await fetch('/api/engineer', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({name, args})})).json(); }
+async function refreshCopilot(){
+  const st = await eng('copilot_status', {});
+  if (st.error){ $('#mode').disabled = true; $('#nprops').textContent = ''; return; }
+  $('#mode').disabled = false; if (st.mode) $('#mode').value = st.mode;
+  const n = (st.pending_proposals||[]).length + (st.pending_elsewhere||[]).length;
+  $('#nprops').textContent = n ? '(' + n + ')' : '';
+}
+$('#mode').onchange = async e => { await eng('copilot_mode', {mode: e.target.value}); add('assistant', `<span class="hint">Mode set to <b>${esc(e.target.value)}</b>.</span>`); refreshCopilot(); };
+async function showProps(){
+  const r = await eng('proposals', {status:'pending'});
+  const ps = r.proposals || [];
+  $('#props').innerHTML = ps.length ? ps.map(p => {
+    const c = p.checks || {};
+    const chk = c.errors_before !== undefined ? `<div class="hint">checks: errors ${c.errors_before}→${c.errors_after}, warnings ${c.warnings_before}→${c.warnings_after}${(c.new_findings||[]).length ? '<br>new: ' + esc(c.new_findings.join('; ')) : ''}</div>` : '';
+    return `<div style="border-bottom:1px solid var(--line);padding:8px 0"><b>${esc(p.action)}</b> <span class="hint">${esc(p.id)}</span><div>${esc(p.summary||'')}</div>${chk}
+      <div class="row" style="justify-content:flex-start"><button class="primary" data-acc="${esc(p.id)}">Accept</button><button data-rej="${esc(p.id)}">Reject…</button></div></div>`;
+  }).join('') : '<div class="hint" style="padding:8px 0">Nothing waiting.</div>';
+  $('#props').querySelectorAll('[data-acc]').forEach(b => b.onclick = async () => { const x = await eng('proposal_accept', {id: b.dataset.acc}); add(x.error ? 'error' : 'assistant', esc(x.error || ('Accepted ' + b.dataset.acc + '. ' + (x.reminder||'')))); showProps(); refreshCopilot(); });
+  $('#props').querySelectorAll('[data-rej]').forEach(b => b.onclick = async () => { const why = prompt('Why? (the AI will follow this next time)') || ''; await eng('proposal_reject', {id: b.dataset.rej, reason: why}); add('assistant', `<span class="hint">Rejected ${esc(b.dataset.rej)}${why ? ': ' + esc(why) : ''}</span>`); showProps(); refreshCopilot(); });
+}
+$('#btnProps').onclick = async () => { await showProps(); $('#dlgProps').showModal(); };
+$('#closeProps').onclick = () => $('#dlgProps').close();
+$('#btnUndo').onclick = async () => { const x = await eng('undo', {}); add(x.error ? 'error' : 'assistant', esc(x.error || ('Undone: ' + x.action + ' (' + (x.restored||[]).join(', ') + ')'))); };
+const p = new URLSearchParams(location.search).get('project');
+if (p) fetch('/api/open', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({path:p})}).then(() => { refresh(); refreshCopilot(); }); else { refresh(); refreshCopilot(); }
+</script>
+</body>
+</html>

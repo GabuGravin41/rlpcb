@@ -1,0 +1,158 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>RL PCB — Technical Brief</title>
+<style>
+@page { size: A4; margin: 14mm 14mm 14mm 14mm; }
+:root { --ink:#1b1f24; --mute:#5b6570; --line:#d6dbe0; --accent:#0b6e4f; --soft:#eef5f1; }
+* { box-sizing: border-box; }
+body { font-family: "DejaVu Sans", Arial, sans-serif; color: var(--ink); font-size: 8.9pt; line-height: 1.36; margin: 0; }
+h1 { font-size: 21pt; margin: 0 0 2mm; letter-spacing: -0.2px; }
+h2 { font-size: 12pt; margin: 4mm 0 1.6mm; color: var(--accent); border-bottom: 1.2px solid var(--accent); padding-bottom: 1mm; }
+h3 { font-size: 10.2pt; margin: 3.5mm 0 1.2mm; }
+p { margin: 0 0 2mm; }
+.sub { color: var(--mute); font-size: 10.5pt; margin-bottom: 3mm; }
+.meta { font-size: 8.6pt; color: var(--mute); }
+.box { background: var(--soft); border-left: 3px solid var(--accent); padding: 2.5mm 3.5mm; margin: 2mm 0 3mm; }
+table { border-collapse: collapse; width: 100%; margin: 1.5mm 0 3mm; font-size: 8.8pt; }
+th, td { border: 1px solid var(--line); padding: 1.3mm 2mm; text-align: left; vertical-align: top; }
+th { background: #f4f6f8; font-weight: bold; }
+td.num { text-align: right; white-space: nowrap; font-weight: bold; }
+ul { margin: 0 0 2mm 4.5mm; padding: 0; }
+li { margin-bottom: 0.8mm; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+figure { margin: 0 0 3mm; }
+figure img { width: 100%; border: 1px solid var(--line); display: block; }
+figcaption { font-size: 8pt; color: var(--mute); margin-top: 1mm; }
+.page { page-break-after: always; }
+.flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.8mm; margin: 2mm 0 3mm; }
+.step { border: 1px solid var(--line); border-top: 3px solid var(--accent); padding: 1.5mm; font-size: 7.9pt; }
+.step b { display: block; font-size: 8.8pt; margin-bottom: 0.8mm; }
+.human { border-top-color: #b5651d; }
+code, .mono { font-family: "DejaVu Sans Mono", monospace; font-size: 8.1pt; }
+pre { font-family: "DejaVu Sans Mono", monospace; font-size: 7.6pt; background: #f7f8f9; border: 1px solid var(--line); padding: 2mm; white-space: pre-wrap; margin: 1mm 0 3mm; }
+.arch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5mm; font-size: 7.8pt; line-height:1.3; }
+.arch div { border: 1px solid var(--line); padding: 1.6mm; }
+.arch .top { grid-column: 1 / span 3; text-align: center; background: #f4f6f8; }
+.tag { display:inline-block; font-size:7.6pt; padding:0.3mm 1.5mm; border-radius:2mm; background:#fbeee2; color:#8a4b12; }
+</style></head>
+<body>
+
+<div class="page">
+<h1>RL PCB</h1>
+<div class="sub">An AI design assistant for KiCad that finds parts, calculates values, places components and verifies wiring, and deliberately never draws the wires itself.</div>
+<div class="meta">Dalton Omondi · Kenya · DTMES 2026 Africa Electronics Innovation Challenge — Project Competition (Built Stage) · September 2026</div>
+
+<h2>1. Problem</h2>
+<p>Designing a printed circuit board needs expertise that is scarce and slow to acquire. A beginner has to choose parts, derive component values from datasheets, connect hundreds of pins correctly and lay out a board that meets electrical rules. One wrong connection means a dead board, and every new fabrication run costs weeks and money that students and small hardware teams in Africa rarely have. Most have no senior engineer to review their work.</p>
+<p>General AI chatbots don't fill this gap. They draw schematics badly, producing "ghost" wires that look connected but aren't, and they invent part numbers that don't exist. The help sounds confident but can't be trusted.</p>
+
+<h2>2. Solution and design</h2>
+<div class="box"><b>Core idea.</b> The AI does everything around the drawing (research, parts, calculations, placement, instructions and verification), and the human draws the wires. The AI's <i>design plan</i> is a contract. The human's drawing is the source of truth. RL PCB checks one against the other, so every claim it makes can be verified.</div>
+
+<div class="flow">
+  <div class="step"><b>1 · Plan</b>Requirements → architecture → parts from the user's own KiCad libraries → values from shown formulas.</div>
+  <div class="step"><b>2 · Review</b>Electrical rule check of the <i>intent</i> before drawing: power pins, floating inputs, decoupling, conflicts.</div>
+  <div class="step"><b>3 · Place</b>Symbols grouped around the pins they serve, on hierarchical sheets; exact per-pin wiring instructions.</div>
+  <div class="step human"><b>4 · Human wires</b>The user draws the wires in KiCad. <span class="tag">by design</span></div>
+  <div class="step"><b>5 · Verify → Board</b>Drawing vs plan (missing, shorted, near-miss wires); stackup, trace rules, placement, autorouting, DRC.</div>
+</div>
+
+<h3>Architecture</h3>
+<div class="arch">
+  <div class="top"><b>Chat panel inside KiCad</b> &nbsp;·&nbsp; <b>Claude Desktop / any MCP client</b> &nbsp;→&nbsp; one registry of ~60 specialised tools</div>
+  <div><b>KiCad engine</b><br>Reads .kicad_sch/.kicad_pcb directly (KiCad 4–10). Re-implements KiCad's connectivity rules: wires, junctions, labels, power symbols, hierarchical sheets, buses.</div>
+  <div><b>Design</b><br>Plan &amp; review, symbol placement (no wires), wiring guide, verification, ghost-wire detector.</div>
+  <div><b>Board</b><br>Stackup advisor, net classes, two-sided placement of passives, file &amp; live moves, Freerouting autorouting, DRC, fabrication outputs.</div>
+  <div><b>Library index</b><br>Full-text search over every symbol and footprint installed (22,860 symbols and 15,450 footprints on the test laptop).</div>
+  <div><b>Knowledge</b><br>34 engineering guides and reference architectures, plus the user's own PDFs and datasheets.</div>
+  <div><b>Reference corpus</b><br>136 open-source designs (3,518 parts): "how do real designs wire this chip?"</div>
+</div>
+<p style="margin-top:2mm">The model reasons and explains; the tools do everything that must be exact (coordinates, netlists, geometry, calculations). Live control uses KiCad 9/10's official API; everything else works on the files, so KiCad 7/8 is covered too.</p>
+
+<h2>3. Innovation</h2>
+<ul>
+  <li><b>A division of labour instead of generation.</b> AI tools for electronics usually try to generate whole circuits and fail silently. RL PCB never draws wires and checks every result against an explicit plan.</li>
+  <li><b>Verification backed by KiCad.</b> Its connectivity engine gives results identical to KiCad's own netlister (see §4), which is why its checks can be relied on.</li>
+  <li><b>Checks designed for weaker models.</b> Every step reports a machine-checkable signal (errors, % connections verified, overlaps, unrouted count). The next version adds pre-verified circuit blocks so that smaller, cheaper models can use it offline. It all runs locally on a laptop with free tools (KiCad, Freerouting).</li>
+</ul>
+</div>
+
+<div class="page">
+<h2>4. Results</h2>
+<h3>4.1 Connectivity engine vs KiCad's own netlister</h3>
+<table>
+<tr><th>Test set</th><th>What was compared</th><th>Result</th></tr>
+<tr><td>13 official KiCad 7 demo projects (incl. hierarchical, bus-heavy designs)</td><td>Every net vs <span class="mono">kicad-cli</span> netlist export</td><td class="num">13 / 13 identical</td></tr>
+<tr><td>VESC motor controller (open source, KiCad 4 legacy format)</td><td>Every net vs the project's own netlist</td><td class="num">identical</td></tr>
+<tr><td>KiCad 9/10 demos (Jetson carrier, CM5, VME)</td><td>Schematic nets vs the boards' nets</td><td class="num">match*</td></tr>
+<tr><td>Footprint flip to bottom side (file mode)</td><td>Pads, graphics, text vs KiCad's own flip, 12 footprint types × 4 rotations (48 footprints)</td><td class="num">exact</td></tr>
+</table>
+<p class="meta">* apart from items that are stale in the demo files themselves.</p>
+
+<h3>4.2 End-to-end run on a new design: drone flight controller</h3>
+<p>Brief: 36×36 mm flight controller with 30.5 mm M3 mounting and a 2–6S LiPo input. Parts: STM32F405 MCU, ICM-20602 IMU (SPI), BMP280 barometer (I<sup>2</sup>C), 128 Mbit log flash, TPS5430 5 V/3 A buck regulator, 3.3 V LDO, USB-C with ESD protection, ESC / receiver / video transmitter / SWD connectors.</p>
+<table>
+<tr><th>Stage</th><th>Result</th></tr>
+<tr><td>Parts chosen</td><td class="num">61 parts, all from stock KiCad libraries</td></tr>
+<tr><td>Values calculated (formula shown)</td><td>Buck feedback 9.31 kΩ / 3.01 kΩ → 4.998 V · crystal loads 2·(12−3) = 18 pF · battery divider 10 k/1 k (25.2 V → 2.29 V) · inductor ≈13.4 µH → 15 µH</td></tr>
+<tr><td>Plan review before drawing</td><td class="num">0 errors · 0 warnings</td></tr>
+<tr><td>Schematic</td><td>4 hierarchical sheets, symbols grouped around their pins, <b>no wires drawn</b></td></tr>
+<tr><td>Verification of the finished drawing</td><td class="num">174 / 174 connections (100%)</td></tr>
+<tr><td>Cross-check with KiCad's netlister</td><td class="num">79 / 79 nets agree</td></tr>
+<tr><td>Deliberate mistakes injected</td><td class="num">2 / 2 caught with location</td></tr>
+<tr><td>Board: 4 layers, 36×36 mm, two-sided</td><td class="num">65 footprints · 0 courtyard overlaps</td></tr>
+<tr><td>Autorouting (Freerouting, 3 min)</td><td class="num">88–91% routed · 0 clearance errors from routing</td></tr>
+</table>
+
+<h3>4.3 Mistake detection (actual output)</h3>
+<pre>ERROR  short: Planned nets I2C1_SCL, I2C1_SDA are connected together in the drawing.
+       I2C1_SCL: U3.61; I2C1_SDA: U5.3, R9.2            (SDA and SCL swapped on the barometer)
+WARN   global label 'SPI1_MISO' is not attached to a wire or pin; nearest pin is
+       U4.4 (SAO/SD0) 0.64 mm away (near-miss: move the label onto that pin end)</pre>
+
+<h3>4.4 Wiring instructions (actual output, power sheet)</h3>
+<pre>- +3V3, +5V, GND  [power symbols]      - VBAT [global labels: spans sheets]
+- BUCK_SW  Draw a wire from U1.8 (PH) at (78.74, 45.72) to C3.2 at (93.98, 40.64)
+           Draw a wire from C3.2 at (93.98, 40.64) to L1.1 at (99.06, 53.34)
+           Draw a wire from L1.1 at (99.06, 53.34) to D1.1 (K) at (87.63, 59.69)</pre>
+</div>
+
+<div class="page">
+<h2>5. The design, stage by stage</h2>
+<figure><img src="pwr_crop.png" style="width:92%"><figcaption>Power sheet as placed by RL PCB: battery input, TVS, TPS5430 buck with calculated feedback divider, 3.3 V LDO, battery-sense divider. Symbols and values only; the wires are for the human to draw.</figcaption></figure>
+<div class="grid2">
+<figure><img src="mcu_crop.png"><figcaption>MCU sheet: STM32F405 with decoupling, VCAP, VDDA filter, 8 MHz crystal and load capacitors, reset, boot and LEDs, grouped by the pins they serve.</figcaption></figure>
+<div>
+<figure><img src="2_placement_top.png" style="width:86%"><figcaption>Board placement, top: connectors on the edges, MCU centred, buck regulator in the corner next to the battery pads.</figcaption></figure>
+<figure><img src="3_placement_bottom.png" style="width:86%"><figcaption>Bottom (mirrored view): IMU at the board centre, flash, USB ESD, boot button, and decoupling under the pins it serves.</figcaption></figure>
+</div></div>
+</div>
+
+<div class="page">
+<div class="grid2">
+<figure><img src="4_routed_top.png"><figcaption>After autorouting, top copper. Power paths and the switch-node loop are marked for manual review.</figcaption></figure>
+<figure><img src="5_routed_bottom.png"><figcaption>After autorouting, bottom copper.</figcaption></figure>
+</div>
+<figure><img src="kicad10_laptop.png" style="width:58%"><figcaption>The routed board open in KiCad 10.0.6 on my own laptop (Windows). RL PCB is installed there: library index built, KiCad API connected, tools available in Claude Desktop.</figcaption></figure>
+<h2>6. Impact and applications</h2>
+<ul>
+  <li><b>Students, makers and early hardware startups</b> designing controllers, sensors, power supplies, motor drivers, drones and industrial I/O. RL PCB acts as the reviewer they don't have, cutting failed board revisions.</li>
+  <li><b>Teaching.</b> Every decision is explained with its formula or source, so it doubles as a tutor for university and technical-college electronics courses.</li>
+  <li><b>Local design capacity.</b> It lowers the barrier to designing electronics in Africa, with fabrication abroad where needed, instead of importing finished designs.</li>
+</ul>
+</div>
+
+<h2>7. Honest status and next steps</h2>
+<ul>
+  <li>The drone board is a <b>design generated and verified by the tool</b>. It has not been fabricated or reviewed by an experienced engineer. Open items flagged for datasheet review: IMU reserved pins, TVS orientation, inductor saturation current ≥ 3 A, and USB back-feed into the battery rail.</li>
+  <li>About 10% of connections are left for manual routing, as are the critical paths (regulator hot loop, USB, IMU SPI). Remaining DRC items come from fine-pitch footprints under the default 0.2 mm clearance.</li>
+  <li>Built with extensive AI assistance (Claude) for implementation. I defined the problem, the no-wires architecture and the requirements, and tested it on my own KiCad setup.</li>
+</ul>
+<table>
+<tr><th>Next step</th><th>Purpose</th></tr>
+<tr><td>Library of pre-verified circuit blocks (MCU core, regulators, USB, sensors)</td><td>Lets smaller, cheaper and offline models design reliably: they choose blocks instead of wiring every pin</td></tr>
+<tr><td>More automatic checks (part voltage/current ratings, board fit, back-feed paths, missing pull-ups)</td><td>Turns expert "noticing" into pass/fail signals</td></tr>
+<tr><td>Multi-board systems (connector pinouts across harnesses, power budget)</td><td>Products like printers and industrial machines are several boards</td></tr>
+<tr><td>Public error-detection benchmark and model comparison</td><td>A measured detection rate across hundreds of injected mistakes</td></tr>
+<tr><td>Fabricate and bring up the drone board</td><td>Close the loop from design to working hardware</td></tr>
+</table>
+</body></html>

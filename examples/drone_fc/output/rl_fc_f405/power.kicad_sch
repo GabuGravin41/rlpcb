@@ -1,0 +1,2628 @@
+(kicad_sch
+	(version 20230121)
+	(generator eeschema)
+	(uuid 3eac6405-ba04-4903-b53a-fe1852562d0d)
+	(paper "A4")
+	(title_block
+		(title "Power")
+	)
+	(lib_symbols
+		(symbol "Regulator_Switching:TPS5430DDA"
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at -10.16 8.89 0)
+				(effects
+					(font (size 1.27 1.27))
+					(justify left)
+				)
+			)
+			(property "Value" "TPS5430DDA"
+				(at -1.27 8.89 0)
+				(effects
+					(font (size 1.27 1.27))
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_SO:TI_SO-PowerPAD-8_ThermalVias"
+				(at 1.27 -8.89 0)
+				(effects
+					(font (size 1.27 1.27) italic)
+					(justify left) hide
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tps5430.pdf"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "Step-Down DC-DC Switching Regulator"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "3A, Step Down Swift Converter, Adjustable Output Voltage, 5.5-36V Input Voltage, PowerSO-8"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "TI*SO*PowerPAD*ThermalVias*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "TPS5430DDA_0_1"
+				(rectangle
+					(start -10.16 7.62)
+					(end 10.16 -7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "TPS5430DDA_1_1"
+				(pin input line
+					(at 12.7 5.08 180)
+					(length 2.54)
+					(name "BOOT"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin no_connect line
+					(at -10.16 2.54 0)
+					(length 2.54) hide
+					(name "NC"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin no_connect line
+					(at -10.16 -2.54 0)
+					(length 2.54) hide
+					(name "NC"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "3"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin input line
+					(at 12.7 -5.08 180)
+					(length 2.54)
+					(name "VSENSE"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "4"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin input line
+					(at -12.7 -5.08 0)
+					(length 2.54)
+					(name "EN"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "5"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 -10.16 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "6"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin power_in line
+					(at -12.7 5.08 0)
+					(length 2.54)
+					(name "VIN"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "7"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin output line
+					(at 12.7 0 180)
+					(length 2.54)
+					(name "PH"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "8"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -10.16 90)
+					(length 2.54)
+					(name "GNDPAD"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "9"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Regulator_Linear:AP2112K-3.3"
+			(pin_names (offset 0.254))
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at -5.08 5.715 0)
+				(effects
+					(font (size 1.27 1.27))
+					(justify left)
+				)
+			)
+			(property "Value" "AP2112K-3.3"
+				(at 0 5.715 0)
+				(effects
+					(font (size 1.27 1.27))
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+				(at 0 8.255 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "https://www.diodes.com/assets/Datasheets/AP2112.pdf"
+				(at 0 2.54 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "linear regulator ldo fixed positive"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "600mA low dropout linear regulator, with enable pin, 3.8V-6V input voltage range, 3.3V fixed positive output, SOT-23-5"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "SOT?23?5*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "AP2112K-3.3_0_1"
+				(rectangle
+					(start -5.08 4.445)
+					(end 5.08 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "AP2112K-3.3_1_1"
+				(pin power_in line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "VIN"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin input line
+					(at -7.62 0 0)
+					(length 2.54)
+					(name "EN"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "3"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin no_connect line
+					(at 5.08 0 180)
+					(length 2.54) hide
+					(name "NC"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "4"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin power_out line
+					(at 7.62 2.54 180)
+					(length 2.54)
+					(name "VOUT"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "5"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Device:C"
+			(pin_numbers hide)
+			(pin_names (offset 0.254))
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 -0.762)
+						(xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 0.762)
+						(xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Diode:B340"
+			(pin_numbers hide)
+			(pin_names (offset 1.016) hide)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Value" "B340"
+				(at 0 -2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Footprint" "Diode_SMD:D_SMC"
+				(at 0 -4.445 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "http://www.jameco.com/Jameco/Products/ProdDS/1538777.pdf"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "diode Schottky"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "40V 3A Schottky Barrier Rectifier Diode, SMC"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "D*SMC*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "B340_0_1"
+				(polyline
+					(pts
+						(xy 1.27 0)
+						(xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27)
+						(xy 1.27 -1.27)
+						(xy -1.27 0)
+						(xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.905 0.635)
+						(xy -1.905 1.27)
+						(xy -1.27 1.27)
+						(xy -1.27 -1.27)
+						(xy -0.635 -1.27)
+						(xy -0.635 -0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "B340_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Diode:SMAJ28A"
+			(pin_numbers hide)
+			(pin_names (offset 1.016) hide)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Value" "SMAJ28A"
+				(at 0 -2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Footprint" "Diode_SMD:D_SMA"
+				(at 0 -5.08 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "https://www.littelfuse.com/media?resourcetype=datasheets&itemid=75e32973-b177-4ee3-a0ff-cedaf1abdb93&filename=smaj-datasheet"
+				(at -1.27 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "unidirectional diode TVS voltage suppressor"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "400W unidirectional Transient Voltage Suppressor, 28.0Vr, SMA(DO-214AC)"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "D*SMA*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "SMAJ28A_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27)
+						(xy -1.27 1.27)
+						(xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27)
+						(xy 1.27 -1.27)
+						(xy -1.27 0)
+						(xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SMAJ28A_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Device:L"
+			(pin_numbers hide)
+			(pin_names (offset 1.016) hide)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "L"
+				(at -1.27 0 90)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Value" "L"
+				(at 1.905 0 90)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "inductor choke coil reactor magnetic"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "Inductor"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "L_0_1"
+				(arc
+					(start 0 -2.54)
+					(mid 0.6323 -1.905)
+					(end 0 -1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -1.27)
+					(mid 0.6323 -0.635)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 0)
+					(mid 0.6323 0.635)
+					(end 0 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 1.27)
+					(mid 0.6323 1.905)
+					(end 0 2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "L_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Device:R"
+			(pin_numbers hide)
+			(pin_names (offset 0))
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+		(symbol "Connector_Generic:Conn_01x02"
+			(pin_names (offset 1.016) hide)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Value" "Conn_01x02"
+				(at 0 -5.08 0)
+				(effects
+					(font (size 1.27 1.27))
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(effects
+					(font (size 1.27 1.27)) hide
+				)
+			)
+			(symbol "Conn_01x02_1_1"
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "1"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+					(number "2"
+						(effects
+							(font (size 1.27 1.27))
+						)
+					)
+				)
+			)
+		)
+	)
+(symbol
+		(lib_id "Regulator_Switching:TPS5430DDA")
+		(at 66.04 45.72 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 109831c5-37f8-4294-9870-dacefef3896c)
+		(property "Reference" "U1"
+			(at 55.88 36.83 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left)
+			)
+		)
+		(property "Value" "TPS5430"
+			(at 64.77 36.83 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_SO:TI_SO-PowerPAD-8_ThermalVias"
+			(at 67.31 54.61 0)
+			(effects
+				(font (size 1.27 1.27) italic)
+				(justify left) hide
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/tps5430.pdf"
+			(at 66.04 45.72 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 66.04 45.72 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "TPS5430DDAR"
+			(at 66.04 45.72 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C9864"
+			(at 66.04 45.72 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 9add01d9-d584-4e0f-97d6-74427b4a6758)
+		)
+		(pin "2"
+			(uuid 1fc60f34-e4df-4856-91ea-907d68cc0156)
+		)
+		(pin "3"
+			(uuid b6b02890-4c80-4002-a6f0-988449d24533)
+		)
+		(pin "4"
+			(uuid d763aa06-70ad-4ab9-8737-6d0570650112)
+		)
+		(pin "5"
+			(uuid e38896e4-2aa6-46ac-b964-1b447a9758bc)
+		)
+		(pin "6"
+			(uuid c1c1472b-1740-4129-9317-9013cd3f7ea2)
+		)
+		(pin "7"
+			(uuid 991b27fb-4cf5-417a-a14a-0abb3df19238)
+		)
+		(pin "8"
+			(uuid 7531be79-1ca7-482e-b50f-8f4189a1e9fd)
+		)
+		(pin "9"
+			(uuid e432312a-a5f8-48c5-b9ec-e238afdd448e)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "BUCK_BOOT"
+		(at 78.74 40.64 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 5a322a5d-b43a-4a8b-9181-6b5ec8b29690)
+	)
+	(label "BUCK_FB"
+		(at 78.74 50.8 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 21deaa9f-5a50-49d9-bff0-f7b6871d3de0)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 63.5 55.88 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 84b0e40f-32c5-4668-8aca-570024a97e7a)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 53.34 40.64 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 7e7b9e53-b90c-4b61-be91-3f7e40833273)
+	)
+	(label "BUCK_SW"
+		(at 78.74 45.72 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 302f6f07-d702-4316-a181-f666b280706f)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 66.04 55.88 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 48704ef6-a7e2-41ca-b3c6-5983935c6707)
+	)
+	(symbol
+		(lib_id "Regulator_Linear:AP2112K-3.3")
+		(at 147.32 43.18 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid bb4f0386-ae00-4512-a69c-b844cb916cb9)
+		(property "Reference" "U2"
+			(at 142.24 37.465 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left)
+			)
+		)
+		(property "Value" "AP2112K-3.3"
+			(at 147.32 37.465 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+			(at 147.32 34.925 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/AP2112.pdf"
+			(at 147.32 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C51118"
+			(at 147.32 43.18 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Diodes Inc"
+			(at 147.32 43.18 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "AP2112K-3.3TRG1"
+			(at 147.32 43.18 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 81efe90b-4c6f-4699-8e15-751bbb00b40d)
+		)
+		(pin "2"
+			(uuid f16601f5-41d1-4c51-be20-592b6d48af6a)
+		)
+		(pin "3"
+			(uuid c956ffd8-4c90-4da2-9fb5-80bf673f8fdf)
+		)
+		(pin "4"
+			(uuid 6281931d-8e74-413a-b014-fc78d47aa484)
+		)
+		(pin "5"
+			(uuid 185d849b-9777-49b0-a5a4-43a171b92dc1)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "U2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 139.7 40.64 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid e46362e6-badb-45c4-894b-4bc939b20042)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 147.32 50.8 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 2defea12-677c-435a-a077-15d378f53c36)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 139.7 43.18 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid b897fcd4-4e67-4764-ada2-32aac6f7a822)
+	)
+	(global_label "+3V3"
+		(shape bidirectional)
+		(at 154.94 40.64 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 7392ea1d-3ca0-46f1-a420-ef81f1b607f8)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 41.91 40.64 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid fe990efc-3982-418a-ae74-a37087f612a5)
+		(property "Reference" "C1"
+			(at 41.91 37.338 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10u 50V"
+			(at 41.91 43.942 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 45.72 39.6748 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 41.91 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C13585"
+			(at 41.91 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 41.91 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "X5R 1206"
+			(at 41.91 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL31A106KBHNNNE"
+			(at 41.91 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid f40d5e73-c838-429e-84df-f76b00d0a3b6)
+		)
+		(pin "2"
+			(uuid 5bf2c2c7-ab5c-4c81-9ef8-8c10083977ae)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 38.1 40.64 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid d56ccaa1-5bda-4c2d-afe0-350d4a3afac8)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 45.72 40.64 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid a6300f5c-f348-40e7-bbc0-b55962dee866)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 41.91 25.4 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 14c3e930-be14-412b-9e45-87369a7e8583)
+		(property "Reference" "C2"
+			(at 41.91 22.098 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10u 50V"
+			(at 41.91 28.702 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 45.72 24.4348 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 41.91 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL31A106KBHNNNE"
+			(at 41.91 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 41.91 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C13585"
+			(at 41.91 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "X5R 1206"
+			(at 41.91 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid e3b743a3-bd9f-484c-ba03-50bcc8f6a791)
+		)
+		(pin "2"
+			(uuid 1041fc6e-2451-4a0f-86d6-3d51c660efca)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 38.1 25.4 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 5647ed3d-0346-4d6b-9bf8-0d2744bace12)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 45.72 25.4 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid dcf33d79-75ae-47c8-910f-11b5ec0e976c)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 90.17 40.64 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 7e1a8740-15b0-4beb-b110-16db3733e797)
+		(property "Reference" "C3"
+			(at 90.17 37.338 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10n"
+			(at 90.17 43.942 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 93.98 39.6748 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 90.17 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C15195"
+			(at 90.17 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL05B103KB5NNNC"
+			(at 90.17 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 90.17 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 209e4f28-6b6f-44f3-88b9-43da64c5cf82)
+		)
+		(pin "2"
+			(uuid ca575b75-9496-41bb-9274-eb914e31a019)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "BUCK_BOOT"
+		(at 86.36 40.64 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 4daa5735-5b5c-4440-8cd6-a8cbc1160572)
+	)
+	(label "BUCK_SW"
+		(at 93.98 40.64 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 2fca6d3f-b260-4828-bef6-c7eca59fdf87)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 128.27 40.64 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 670414df-03b4-4541-b74a-402a293a7df9)
+		(property "Reference" "C4"
+			(at 128.27 37.338 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "22u 10V"
+			(at 128.27 43.942 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 132.08 39.6748 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 128.27 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "25 V part (exceeds 10 V)"
+			(at 128.27 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 128.27 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL21A226MAQNNNE"
+			(at 128.27 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C45783"
+			(at 128.27 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid c45f7d08-c013-46dd-8afd-998e7c076153)
+		)
+		(pin "2"
+			(uuid 03ca3419-1951-4175-9337-7a2565b3f7cb)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 124.46 40.64 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 8ef56a4f-f985-4d7f-9ee9-71e9162d6adc)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 132.08 40.64 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 28733c48-58aa-4a1e-b58b-b414bd7a9d60)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 128.27 55.88 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 183c484f-fe63-4d7c-b11b-8b14f7534bd0)
+		(property "Reference" "C5"
+			(at 128.27 52.578 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "22u 10V"
+			(at 128.27 59.182 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 132.08 54.9148 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 128.27 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "25 V part (exceeds 10 V)"
+			(at 128.27 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 128.27 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL21A226MAQNNNE"
+			(at 128.27 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C45783"
+			(at 128.27 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid a1e95e8e-33a4-46ce-8b48-29e39a4cbcd1)
+		)
+		(pin "2"
+			(uuid dbb2921b-5aa2-4c62-ad95-dd623658f25f)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 124.46 55.88 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid e128c3a9-1a4d-4916-97e3-d3d51e8d1ac8)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 132.08 55.88 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid a2110737-5ab3-428e-9f1c-1818caabf69d)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 128.27 25.4 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 8860e1a5-0e50-4a4f-b67c-0ab73a029558)
+		(property "Reference" "C6"
+			(at 128.27 22.098 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "1u"
+			(at 128.27 28.702 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 132.08 24.4348 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 128.27 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 128.27 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL05A105KA5NQNC"
+			(at 128.27 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C52923"
+			(at 128.27 25.4 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid b81b6bb3-25f1-4e70-9913-b253af7d3009)
+		)
+		(pin "2"
+			(uuid 279cb1e5-cc03-417a-a0cf-a78252f189f1)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 124.46 25.4 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 514ce2c7-c1ba-418d-952c-acdbaacac524)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 132.08 25.4 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 847a3514-70ca-44f7-b656-85d023d5b4ca)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 166.37 40.64 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid a63bf51e-bf43-422c-ba2e-0377da87b5b1)
+		(property "Reference" "C7"
+			(at 166.37 37.338 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "4.7u"
+			(at 166.37 43.942 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 170.18 39.6748 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 166.37 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C19666"
+			(at 166.37 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL10A475KO8NNNC"
+			(at 166.37 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 166.37 40.64 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid e1840a30-01d1-4fa0-8b14-c5d8ca031f23)
+		)
+		(pin "2"
+			(uuid 72327ecc-6f73-4ce4-9c4a-3e1156bc4504)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "+3V3"
+		(shape bidirectional)
+		(at 162.56 40.64 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 2d7acda4-3c4a-43df-afb1-c62f269ab67b)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 170.18 40.64 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 3dc3ab51-39b5-4c6e-8c47-90f01ec051d3)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 29.21 66.04 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 30fb0cfb-0586-4cae-9f09-3637fba249f5)
+		(property "Reference" "C8"
+			(at 29.21 62.738 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "100n"
+			(at 29.21 69.342 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 33.02 65.0748 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 29.21 66.04 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C1525"
+			(at 29.21 66.04 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Samsung"
+			(at 29.21 66.04 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 29.21 66.04 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 9ba72729-c20c-4a17-b95f-4d5e8b96cd27)
+		)
+		(pin "2"
+			(uuid 553f863d-3bbc-4916-b6a9-50b20dbe7759)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "C8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT_SENSE"
+		(shape bidirectional)
+		(at 25.4 66.04 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid ca4cf6b5-a2ff-4147-ba77-dad5b816bc88)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 33.02 66.04 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 8576b426-3152-4eab-9ad7-f438120b4b7d)
+	)
+	(symbol
+		(lib_id "Diode:B340")
+		(at 87.63 55.88 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid a97853af-f8ea-499e-b2ae-2d1149b960d9)
+		(property "Reference" "D1"
+			(at 87.63 50.8 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "B340A"
+			(at 87.63 60.96 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMA"
+			(at 92.075 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "http://www.jameco.com/Jameco/Products/ProdDS/1538777.pdf"
+			(at 87.63 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "B340A-13-F"
+			(at 87.63 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C85098"
+			(at 87.63 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Diodes Inc"
+			(at 87.63 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid f18a605e-c301-45c7-9ae0-1ff71074452a)
+		)
+		(pin "2"
+			(uuid 4044ea2a-6093-46b0-86f5-af80bf04c293)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "BUCK_SW"
+		(at 87.63 59.69 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid cd2f34b4-d8df-4f2a-827e-de4f30585540)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 87.63 52.07 90)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 07f62c39-7f8f-4084-b240-b6f1a4c8017f)
+	)
+	(symbol
+		(lib_id "Diode:SMAJ28A")
+		(at 44.45 55.88 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 201ab02b-da15-46a5-9bf0-a91c42786ce6)
+		(property "Reference" "D2"
+			(at 44.45 50.8 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "SMAJ28A"
+			(at 44.45 60.96 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMA"
+			(at 49.53 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "https://www.littelfuse.com/media?resourcetype=datasheets&itemid=75e32973-b177-4ee3-a0ff-cedaf1abdb93&filename=smaj-datasheet"
+			(at 44.45 57.15 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Diodes Inc"
+			(at 44.45 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C134977"
+			(at 44.45 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "SMAJ28A-13-F"
+			(at 44.45 55.88 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid dca0f281-0011-4eb3-a510-18cbfbb6cf05)
+		)
+		(pin "2"
+			(uuid c2c0b0d6-3b71-4c97-9601-5586809fc554)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 44.45 59.69 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 6177e78e-e3bc-45f8-b4df-1cc4ee79e6b8)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 44.45 52.07 90)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 0fdcf30f-4116-4d65-b7f6-89c5599a80dc)
+	)
+	(symbol
+		(lib_id "Device:L")
+		(at 102.87 53.34 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 6d4b97e5-a72a-42d2-b067-798f15915fa7)
+		(property "Reference" "L1"
+			(at 102.87 52.07 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "15u"
+			(at 102.87 54.61 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Inductor_SMD:L_Bourns_SRP7028A_7.3x6.6mm"
+			(at 102.87 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 102.87 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Bourns"
+			(at 102.87 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "SRP7028A-150M"
+			(at 102.87 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "not stocked at LCSC when checked: consign it, or use SRP7028A-100M (C2687402, 10 uH) after re-checking buck ripple"
+			(at 102.87 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 420121a2-28e7-4b1b-aeb7-51508edf6138)
+		)
+		(pin "2"
+			(uuid 123dc648-248d-438a-889f-d20a425394be)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "L1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "BUCK_SW"
+		(at 99.06 53.34 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid ae0ef61c-b182-42df-93aa-3fc5c4c9c280)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 106.68 53.34 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 2300e22d-f6fe-4afa-b290-738e0eca75eb)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 102.87 63.5 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid eaebbba9-30a9-4503-a87e-d1202e2bc6ae)
+		(property "Reference" "R1"
+			(at 102.87 61.214 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "9.31k"
+			(at 102.87 65.786 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 102.87 65.278 90)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 102.87 63.5 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "0.1 % thin film"
+			(at 102.87 63.5 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "Stackpole"
+			(at 102.87 63.5 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "RNCF0402BKE9K31"
+			(at 102.87 63.5 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C4174801"
+			(at 102.87 63.5 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 7f7487a0-e1df-4d64-a2e8-2f2411d2005f)
+		)
+		(pin "2"
+			(uuid abc009c6-0a0d-4f60-8bac-1b241419d86a)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "+5V"
+		(shape bidirectional)
+		(at 99.06 63.5 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid a953a087-bbb6-4f55-a4aa-30ff3979dd4f)
+	)
+	(label "BUCK_FB"
+		(at 106.68 63.5 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 2084b491-b2f1-42fd-9d4f-06eba0bde7f3)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 107.95 43.18 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 714e9d03-a54d-4dd1-86ce-3dc3aa6141d9)
+		(property "Reference" "R2"
+			(at 107.95 40.894 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "3.01k"
+			(at 107.95 45.466 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 107.95 44.958 90)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 107.95 43.18 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "1 % 0402: pick at order time (search 3.01k 0402 1%)"
+			(at 107.95 43.18 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid a109b0f3-8f46-4781-8aeb-846a46a96e52)
+		)
+		(pin "2"
+			(uuid 5239fa3d-6509-44aa-9780-9c3aa373669d)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "BUCK_FB"
+		(at 104.14 43.18 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 4273e8e5-7841-4b64-8d70-bd2f2562c42f)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 111.76 43.18 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 969c0e99-2d2a-4ca9-b58d-7cb27c76dfcb)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 29.21 53.34 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid f64d3763-6e85-4ce5-ade8-cb093162ae6b)
+		(property "Reference" "R3"
+			(at 29.21 51.054 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10k"
+			(at 29.21 55.626 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 29.21 55.118 90)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 29.21 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 29.21 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "0402WGF1002TCE"
+			(at 29.21 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C25744"
+			(at 29.21 53.34 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 30e0753e-25e9-4843-a5bc-fc344732b0a4)
+		)
+		(pin "2"
+			(uuid 836fdb09-b289-4943-a106-302af50cdcf7)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 25.4 53.34 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 8cf08cf5-bb03-426d-84c9-261af6484772)
+	)
+	(global_label "VBAT_SENSE"
+		(shape bidirectional)
+		(at 33.02 53.34 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 93ddb4bb-adaf-4644-bc78-6470ea4aba77)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 29.21 78.74 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid 3887be6f-f626-4927-964d-08c0246325df)
+		(property "Reference" "R4"
+			(at 29.21 76.454 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "1k"
+			(at 29.21 81.026 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 29.21 80.518 90)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 29.21 78.74 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "MPN" "0402WGF1001TCE"
+			(at 29.21 78.74 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "LCSC" "C11702"
+			(at 29.21 78.74 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 29.21 78.74 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 077173c7-ae82-4bde-91db-09f31b31de71)
+		)
+		(pin "2"
+			(uuid acc039b1-6c6e-42f8-8ed1-468d75f2d626)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT_SENSE"
+		(shape bidirectional)
+		(at 25.4 78.74 180)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid f124aa6f-c2aa-4f04-9cfd-1168e7e46a90)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 33.02 78.74 0)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left bottom)
+		)
+		(uuid 7378d640-6986-46b1-8084-03d80182ac3f)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 25.4 38.1 90)
+		(unit 1)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(uuid 1e7ac011-fe4b-422a-9b5f-28b0dbe20357)
+		(property "Reference" "J1"
+			(at 25.4 35.56 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "BATT"
+			(at 25.4 44.45 90)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm"
+			(at 25.4 38.1 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Datasheet" "~"
+			(at 25.4 38.1 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(property "Sourcing" "solder pads, no part"
+			(at 25.4 38.1 0)
+			(effects
+				(font (size 1.27 1.27)) hide
+			)
+		)
+		(pin "1"
+			(uuid 04bb300a-b1f0-484a-8073-9a18e91b968a)
+		)
+		(pin "2"
+			(uuid bb7212a9-4445-4eca-adca-5942cbe0ddf6)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620/46aadfff-b080-4dfa-afdb-9e61c120c4f0"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 25.4 43.18 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid 1a360e38-7af5-4377-906e-5e44dba9edb0)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 27.94 43.18 270)
+		(fields_autoplaced)
+		(effects
+			(font (size 1.27 1.27))
+			(justify right bottom)
+		)
+		(uuid de54f6f6-754c-4b67-bfb7-f8e25d8c3dce)
+	)
+	)

@@ -1,0 +1,147 @@
+(kicad_sch
+	(version 20230121)
+	(generator eeschema)
+	(uuid 130bcc18-1b15-4e7e-9f48-d7606f0d1620)
+	(paper "A3")
+	(title_block
+		(title "RL-FC F405 flight controller")
+	)
+	(lib_symbols)
+	(sheet
+		(at 22.86 22.86)
+		(size 50.8 35.56)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid 46aadfff-b080-4dfa-afdb-9e61c120c4f0)
+		(property "Sheetname" "Power"
+			(at 22.86 22.16 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 22.86 59.02 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 83.82 22.86)
+		(size 50.8 35.56)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid a1a8e423-d39f-47c7-95df-7b6aa40e6edd)
+		(property "Sheetname" "MCU"
+			(at 83.82 22.16 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 83.82 59.02 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 144.78 22.86)
+		(size 50.8 35.56)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid 481e2239-c150-48f7-a379-55722630c72e)
+		(property "Sheetname" "Sensors"
+			(at 144.78 22.16 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sensors.kicad_sch"
+			(at 144.78 59.02 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 205.74 22.86)
+		(size 50.8 35.56)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid ba9712de-8aea-49c4-84c1-da778f8a75e8)
+		(property "Sheetname" "Connectors"
+			(at 205.74 22.16 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "connectors.kicad_sch"
+			(at 205.74 59.02 0)
+			(effects
+				(font (size 1.27 1.27))
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rl_fc_f405"
+				(path "/130bcc18-1b15-4e7e-9f48-d7606f0d1620"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)
