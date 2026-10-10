@@ -47,8 +47,9 @@ class RLPCBCopilot(pcbnew.ActionPlugin):
             edge = getattr(wx.html2, "WebViewBackendEdge", None)
             if os.name == "nt" and not (edge and wx.html2.WebView.IsBackendAvailable(edge)):
                 raise RuntimeError("no Edge WebView2 backend")  # the IE backend can't run the panel
-            frame = wx.Frame(wx.GetActiveWindow(), title="RL PCB Copilot", size=(520, 900),
+            frame = wx.Frame(wx.GetActiveWindow(), title="RL PCB Copilot", size=(680, 780),
                              style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT)
+            frame.SetMinSize(wx.Size(460, 500))
             view = wx.html2.WebView.New(frame, backend=edge) if os.name == "nt" else wx.html2.WebView.New(frame)
             view.LoadURL(url)
             frame.Show()

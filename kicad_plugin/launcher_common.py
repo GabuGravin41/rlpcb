@@ -85,7 +85,7 @@ def open_window(project_path=""):
         cands += [shutil.which(x) or "" for x in ("microsoft-edge", "google-chrome", "chromium", "chromium-browser")]
     for c in cands:
         if c and os.path.exists(c):
-            subprocess.Popen([c, f"--app={url}", "--window-size=520,900"])
+            subprocess.Popen([c, f"--app={url}", "--window-size=680,780"])
             return url
     webbrowser.open(url)
     return url

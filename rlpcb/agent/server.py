@@ -8,6 +8,7 @@ import argparse
 import json
 import os
 import re
+import sys
 import threading
 import urllib.parse
 import webbrowser
@@ -72,9 +73,21 @@ class Handler(BaseHTTPRequestHandler):
             return self._file(os.path.join(WEB_DIR, "chat.html"), "text/html; charset=utf-8")
         if u.path == "/api/status":
             s = load_settings()
-            return self._json({"project": SESSION.project, "provider": s.get("provider"), "model": s.get("model"),
-                               "has_key": bool(s.get("anthropic_api_key") or os.environ.get("ANTHROPIC_API_KEY")),
-                               "tools": len(TOOLS)})
+            has_anthropic = bool(s.get("anthropic_api_key") or os.environ.get("ANTHROPIC_API_KEY"))
+            has_openai = bool(s.get("openai_api_key") or os.environ.get("OPENAI_API_KEY"))
+            prov = s.get("provider") or ("anthropic" if has_anthropic else ("openai" if has_openai else "local"))
+            model = s.get("model") or ("auto" if prov == "anthropic" else s.get("openai_model", "local"))
+            return self._json({
+                "project": SESSION.project,
+                "provider": prov,
+                "model": model,
+                "has_anthropic_key": has_anthropic,
+                "has_openai_key": has_openai,
+                "has_key": has_anthropic or has_openai,
+                "tools": len(TOOLS),
+                "python_exe": sys.executable,
+                "repo_dir": REPO_DIR,
+            })
         if u.path == "/api/conversations":
             return self._json(list_conversations())
         if u.path == "/api/conversation":

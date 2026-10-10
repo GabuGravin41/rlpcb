@@ -109,6 +109,10 @@ class Conversation:
         try:
             if provider == "openai":
                 self._run_openai(emit, s)
+            elif provider == "anthropic" and anthropic_key():
+                self._run_anthropic(emit, s)
+            elif provider == "local" or not anthropic_key():
+                self._run_local(emit, text)
             else:
                 self._run_anthropic(emit, s)
         except Exception as e:  # noqa
@@ -190,8 +194,16 @@ class Conversation:
                 msgs.append(m["_openai"])
         for step in range(int(s.get("max_steps", 40))):
             emit({"type": "status", "text": f"thinking… ({model})"})
-            resp = _http(f"{base}/chat/completions", {"model": model, "messages": msgs, "tools": tools},
-                         {"authorization": f"Bearer {key}"})
+            try:
+                resp = _http(f"{base}/chat/completions", {"model": model, "messages": msgs, "tools": tools},
+                             {"authorization": f"Bearer {key}"})
+            except Exception as e:
+                raise RuntimeError(
+                    f"AI endpoint connection failed ({base}): {e}\n\n"
+                    f"• If using Ollama or LM Studio, verify that the local server is running.\n"
+                    f"• If using Grok or OpenAI, check that your API key and base URL are correct.\n"
+                    f"• You can switch to Local Assistant mode anytime in Settings (⚙)."
+                )
             msg = resp["choices"][0]["message"]
             msgs.append(msg)
             if msg.get("content"):
@@ -211,6 +223,183 @@ class Conversation:
                 res.pop("image_paths", None)
                 emit({"type": "tool_result", "name": name, "summary": _summ(res)})
                 msgs.append({"role": "tool", "tool_call_id": c["id"], "content": to_json(res, 30000)})
+
+    def _run_local(self, emit: Callable[[dict], None], text: str) -> None:
+        """Local intelligence execution without external API keys."""
+        tl = text.lower().strip()
+        tool_name = None
+        tool_args = {}
+
+        if "review layout" in tl or "review the board" in tl or "layout" in tl:
+            tool_name = "review_layout"
+            emit({"type": "status", "text": "Analyzing PCB layout..."})
+        elif "ghost wire" in tl or "check the schematic" in tl or "drawing" in tl:
+            tool_name = "check_schematic"
+            emit({"type": "status", "text": "Scanning schematic drawing..."})
+        elif "verify" in tl:
+            tool_name = "verify_schematic"
+            emit({"type": "status", "text": "Verifying drawing vs plan..."})
+        elif "what's verified" in tl or "assurance" in tl:
+            tool_name = "assurance_report"
+            emit({"type": "status", "text": "Compiling assurance report..."})
+        elif "board status" in tl or "board overview" in tl or "status" in tl:
+            tool_name = "board_overview"
+            emit({"type": "status", "text": "Reading board overview..."})
+        elif "drc" in tl:
+            tool_name = "run_drc"
+            emit({"type": "status", "text": "Running DRC..."})
+        elif "wiring guide" in tl:
+            tool_name = "wiring_guide"
+            emit({"type": "status", "text": "Generating wiring sequence..."})
+        elif "show schematic" in tl or "render schematic" in tl:
+            tool_name = "render_schematic"
+            emit({"type": "status", "text": "Rendering schematic sheets..."})
+        elif "new design" in tl or "kickoff" in tl:
+            tool_name = "kickoff"
+            tool_args = {"idea": text}
+            emit({"type": "status", "text": "Generating design architecture..."})
+        elif "calculate" in tl:
+            tool_name = "calculate"
+            tool_args = {"name": "trace_width", "params": {"current_a": 3.0}}
+            emit({"type": "status", "text": "Running calculator..."})
+
+        if tool_name:
+            emit({"type": "tool", "name": tool_name, "input": tool_args})
+            res = run_tool(self.session, tool_name, tool_args)
+            images = [p for p in (res.get("image_paths") or [])]
+            emit({"type": "tool_result", "name": tool_name, "summary": _summ(res), "images": images})
+            formatted = self._format_local_result(tool_name, res, text)
+            self.messages.append({"role": "assistant", "content": [{"type": "text", "text": formatted}]})
+            emit({"type": "text", "text": formatted})
+        else:
+            resp = self._local_conversational_response(text)
+            self.messages.append({"role": "assistant", "content": [{"type": "text", "text": resp}]})
+            emit({"type": "text", "text": resp})
+
+    def _format_local_result(self, tool_name: str, res: dict, query: str) -> str:
+        if "error" in res:
+            return f"**Error executing `{tool_name}`:** {res['error']}"
+
+        if tool_name == "review_layout":
+            pts = res.get("points", [])
+            md = f"### ⌗ PCB Layout Engineering Review\n\nEvaluated layout against senior layout guidelines. Found **{len(pts)} findings**:\n\n"
+            md += "| Category | Severity | Finding | Physical Rationale & Suggestion |\n|---|---|---|---|\n"
+            for p in pts:
+                cat = p.get("category", "layout")
+                lvl = p.get("level", "info")
+                msg = p.get("message", "").replace("\n", " ")
+                why = p.get("why", "").replace("\n", " ")
+                sug = p.get("suggestion", "")
+                rec = f"{why} *Action: {sug}*" if sug else why
+                md += f"| **{cat}** | `{lvl}` | {msg} | {rec} |\n"
+            md += "\n---\n*✨ Verified by RL PCB Live Board Analysis.*"
+            return md
+
+        if tool_name == "check_schematic":
+            probs = res.get("issues", [])
+            counts = res.get("counts", {})
+            md = "### 👻 Schematic Drawing Audit\n\n"
+            if not probs:
+                md += f"✅ **Zero ghost wires or drawing defects found!**\n- Nets checked: {counts.get('nets', 0)}\n- Components checked: {counts.get('components', 0)}\n- All pins and junctions are cleanly connected.\n"
+            else:
+                md += f"Found **{len(probs)} drawing issues**:\n\n"
+                for pr in probs:
+                    at = pr.get("at_mm") or pr.get("at", [0, 0])
+                    md += f"- **{pr.get('kind', 'Issue')}**: {pr.get('message', '')} at `({at[0]:.2f}, {at[1]:.2f}) mm` on sheet `{pr.get('sheet', '/')}`\n"
+            return md
+
+        if tool_name == "verify_schematic":
+            pct = res.get("progress_percent", 0)
+            done = res.get("connections_done", 0)
+            tot = res.get("connections_planned", 0)
+            miss = res.get("missing_connections", [])
+            md = f"### ✔ Schematic vs. Plan Verification ({pct}% Complete)\n\n"
+            md += f"- **Connections verified:** {done} / {tot}\n"
+            md += f"- **Nets complete:** {res.get('nets_complete', 0)} / {res.get('nets_total', 0)}\n"
+            md += f"- **Shorts / unplanned nets:** {len(res.get('shorts', []))}\n\n"
+            if miss:
+                md += "#### Next Connections Needed:\n"
+                for m in miss[:10]:
+                    md += f"- Wire `{m.get('from', '')}` to `{m.get('to', '')}` (Net: `{m.get('net', '')}`)\n"
+            return md
+
+        if tool_name == "board_overview":
+            sz = res.get("size_mm", [0, 0])
+            r = res.get("routing", {})
+            md = f"### ▦ Board Overview & Routing Status\n\n"
+            md += f"- **Board Dimensions:** {sz[0]} × {sz[1]} mm ({res.get('thickness_mm', 1.6)} mm thick)\n"
+            md += f"- **Layer Stack:** {len(res.get('copper_layers', []))} copper layers ({', '.join(res.get('copper_layers', []))})\n"
+            md += f"- **Components / Footprints:** {res.get('footprints', 0)} total ({res.get('top_side', 0)} top, {res.get('bottom_side', 0)} bottom)\n"
+            md += f"- **Routing Progress:** ~{r.get('percent_routed_approx', 0)}% routed (~{r.get('unrouted_connections_approx', 0)} connections remaining)\n"
+            md += f"- **Tracks & Vias:** {res.get('tracks', 0)} track segments, {res.get('vias', 0)} vias\n"
+            md += f"- **Copper Zones:** {res.get('zones', 0)} zones ({', '.join(res.get('zone_nets', []))})\n"
+            return md
+
+        if tool_name == "assurance_report":
+            v = res.get("result", {}).get("findings", [])
+            nv = res.get("not_verified", [])
+            md = "### ✓? Engineering Assurance Report\n\n"
+            if v:
+                md += "#### Automated Check Findings:\n"
+                for f in v:
+                    md += f"- `[{f.get('severity', 'info')}]` **{f.get('rule', '')}**: {f.get('message', '')}\n"
+            if nv:
+                md += "\n#### Not Verified by Static Checks (Requires Inspection):\n"
+                for item in nv:
+                    md += f"- ⚠️ {item}\n"
+            return md
+
+        if tool_name == "run_drc":
+            v = res.get("violations", [])
+            md = f"### ⚠ KiCad Design Rule Check (DRC)\n\nFound **{len(v)} DRC violations**.\n\n"
+            if not v:
+                md += "✅ **0 DRC Errors!** Clearance, track widths, and keepouts pass.\n"
+            else:
+                for item in v[:12]:
+                    md += f"- `{item.get('type', 'DRC')}`: {item.get('message', '')}\n"
+            return md
+
+        if tool_name == "wiring_guide":
+            steps = res.get("steps", [])
+            md = f"### 🧭 Step-by-Step Wiring Sequence\n\nComputed optimal shortest wiring sequence ({len(steps)} steps):\n\n"
+            for s in steps[:12]:
+                md += f"{s.get('step', '')}. Connect **{s.get('from', '')}** to **{s.get('to', '')}** (Net `{s.get('net', '')}`)\n"
+            return md
+
+        if tool_name == "render_schematic":
+            return "### 🖼 Schematic Sheets Rendered\n\nRendered visual sheets displayed below."
+
+        return f"### Result for `{tool_name}`\n\n```json\n{to_json(res, 2000)}\n```"
+
+    def _local_conversational_response(self, text: str) -> str:
+        # Check for specific component references like U1, C12, J2
+        match = re.search(r"\b([A-Z]+[0-9]+)\b", text)
+        if match:
+            comp = match.group(1)
+            r = run_tool(self.session, "locate", {"reference": comp})
+            exp = run_tool(self.session, "explain_component", {"ref": comp})
+            if not r.get("error"):
+                return (f"### Component: {comp}\n\n"
+                        f"- **Value:** `{r.get('value', 'N/A')}`\n"
+                        f"- **Footprint:** `{r.get('footprint', 'N/A')}`\n"
+                        f"- **Coordinates:** `({r.get('pos', [0, 0])[0]:.2f}, {r.get('pos', [0, 0])[1]:.2f}) mm` on sheet `{r.get('sheet', '/')}`\n"
+                        f"- **Role:** {exp.get('role', 'Circuit component')}\n\n"
+                        f"{exp.get('explanation', '')}\n\n"
+                        f"---\n*💡 Running in Local Direct Intelligence Mode.*")
+
+        proj = self.session.project or "No active KiCad project"
+        return (f"### RL PCB Local Copilot\n\n"
+                f"**Active Project:** `{proj}`\n\n"
+                f"I am running natively in **Local Direct Intelligence Mode** (zero API key required). You can click any quick action above or ask me to:\n\n"
+                f"- **`Review layout`**: 16-point expert layout review (placement, return paths, decoupling, skew)\n"
+                f"- **`Ghost wires`**: Scan for floating wires, near-misses, and unconnected pins\n"
+                f"- **`Verify wiring`**: Check hand-drawn schematic against planned connections\n"
+                f"- **`Board status`**: Inspect board size, copper stackup, track counts, and unrouted ratsnest\n"
+                f"- **`Run DRC`**: Check design rule clearances and violations\n"
+                f"- **`Locate <Ref>`**: Find and highlight any part on the schematic or PCB (e.g. `locate U3`)\n\n"
+                f"---\n"
+                f"✨ *Tip: For full conversational AI pair-programming, you can also ask your Antigravity assistant directly in chat!*")
+
 
 
 def _summ(res: dict) -> str:
