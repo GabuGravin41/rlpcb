@@ -1,5 +1,5 @@
 """Worked example: RL PCB designs a 30.5x30.5 mm drone flight controller (STM32F405, ICM-20602, BMP280,
-128 Mbit blackbox flash, 2-6S input, 5 V/2 A buck, USB-C). In this file is the list of tools in sequence that the model runs.
+128 Mbit blackbox flash, 2-6S input, 5 V/2 A buck, USB-C). 
 
     python examples/drone_fc/design_session.py <parent-folder>
 """
